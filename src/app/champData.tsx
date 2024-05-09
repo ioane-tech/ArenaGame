@@ -1,0 +1,223 @@
+export interface Champion {
+    img: string;
+    name: string;
+    hp: number;
+    damage: number;
+    abilityAvailable: boolean;
+}
+
+const champData: Champion[] = [
+    {
+        img: '/assets/ironGard.jpeg',
+        name: "ironGard",
+        hp: 1500,
+        damage: 200,
+        abilityAvailable: true,
+    },
+    {
+        img:'/assets/Rafael.jpeg',
+        name: "Rafael",
+        hp: 1000,
+        damage: 250,
+        abilityAvailable: true,
+    },
+    {
+        img:'/assets/Revenger.jpeg',
+        name: "Revenger",
+        hp: 1250,
+        damage: 200,
+        abilityAvailable: true,
+    },
+    {
+        img:'/assets/DragonSkin.jpeg',
+        name: "DragonSkin",
+        hp: 1400,
+        damage: 200,
+        abilityAvailable: true,
+    },
+    {
+        img:'/assets/Pantheron.jpeg',
+        name: "Pantheron",
+        hp: 1200,
+        damage: 250,
+        abilityAvailable: true,
+    },
+    {
+        img:'/assets/Cacula.jpeg',
+        name: "Cacula",
+        hp: 1700,
+        damage: 200,
+        abilityAvailable: true,
+    },
+    {
+        img:'/assets/Sdrakem.jpeg',
+        name: "Sdrakem",
+        hp: 1400,
+        damage: 200,
+        abilityAvailable: true,
+    },
+    {
+        img:'/assets/Meilis.jpeg',
+        name: "Meilis",
+        hp: 1000,
+        damage: 250,
+        abilityAvailable: true,
+    },
+    {
+        img:'/assets/Thornn.jpeg',
+        name: "Thornn",
+        hp: 1550,
+        damage: 200,
+        abilityAvailable: true,
+    },
+    {
+        img:'/assets/Visioner.jpeg',
+        name: "Visioner",
+        hp: 1350,
+        damage: 200,
+        abilityAvailable: true,
+    },
+    {
+        img:'/assets/Hurricane.jpeg',
+        name: "Hurricane",
+        hp: 1800,
+        damage: 200,
+        abilityAvailable: true,
+    },
+    {
+        img:'/assets/Sespa.jpeg',
+        name: "Sespa",
+        hp: 1200,
+        damage: 200,
+        abilityAvailable: true,
+    },
+    {
+        img:'/assets/Mouzer.jpeg',
+        name: "Mouzer",
+        hp: 1100,
+        damage: 250,
+        abilityAvailable: true,
+    },
+    {
+        img:'/assets/Ars.jpeg',
+        name: "Ars",
+        hp: 900,
+        damage: 200,
+        abilityAvailable: true,
+    },
+    {
+        img:'/assets/MoonLight.jpeg',
+        name: "Moon light",
+        hp: 1100,
+        damage: 250,
+        abilityAvailable: true,
+    },
+    {
+        img:'/assets/KingNolaran.jpeg',
+        name: "King Nolaran",
+        hp: 1400,
+        damage: 200,
+        abilityAvailable: true,
+    },
+    {
+        img:'/assets/Chaos.jpeg',
+        name: "Chaos",
+        hp: 1900,
+        damage: 200,
+        abilityAvailable: true,
+    },
+    {
+        img:'/assets/Gogothur.jpeg',
+        name: "Gogothur",
+        hp: 2200,
+        damage: 250,
+        abilityAvailable: true,
+    },
+    {
+        img:'/assets/Orion.jpeg',
+        name: "Orion",
+        hp: 1150,
+        damage: 250,
+        abilityAvailable: true,
+    },
+    {
+        img:'/assets/Magma.jpeg',
+        name: "Magma",
+        hp: 2050,
+        damage: 150,
+        abilityAvailable: true,
+    },
+    {
+        img:'/assets/Meteorc.jpeg',
+        name: "Meteorc",
+        hp: 1800,
+        damage: 200,
+        abilityAvailable: true,
+    },
+    {
+        img:'/assets/Groguard.jpeg',
+        name: "Groguard",
+        hp: 1350,
+        damage: 250,
+        abilityAvailable: true,
+    },
+    {
+        img:'/assets/Electrition.jpeg',
+        name: "Electrition",
+        hp: 1900,
+        damage: 200,
+        abilityAvailable: true,
+    },
+    {
+        img:'/assets/Oull.jpeg',
+        name: "Oull",
+        hp: 1200,
+        damage: 200,
+        abilityAvailable: true,
+    },
+    {
+        img:'/assets/Seismo.jpeg',
+        name: "Seismo",
+        hp: 1650,
+        damage: 200,
+        abilityAvailable: true,
+    },
+    {
+        img:'/assets/Pyrobadger.jpeg',
+        name: "Pyrobadger",
+        hp: 1600,
+        damage: 200,
+        abilityAvailable: true,
+    },
+    {
+        img:"/assets/Aart'Adur.jpeg",
+        name: "Aart'adur",
+        hp: 1600,
+        damage: 200,
+        abilityAvailable: true,
+    },
+    {
+        img:"/assets/Za'e.jpeg",
+        name: "Za'e",
+        hp: 200,
+        damage: 150,
+        abilityAvailable: false,
+        //dodge 35%  display on front line when Aart adur kills someone
+    },
+    {
+        img:"/assets/loyd&bobo.jpeg",
+        name: "loyd&bobo",
+        hp: 1700,
+        damage: 200,
+        abilityAvailable: true,
+    },
+    {
+        img:'/assets/PantherBlack.jpeg',
+        name: "Black Panther",
+        hp: 500,
+        damage: 200,
+        abilityAvailable: false,
+    },
+]
+
+export default champData
