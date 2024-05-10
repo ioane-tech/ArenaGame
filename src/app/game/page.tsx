@@ -15,11 +15,24 @@ function Game() {
   const [popupOpen, setPopupOpen] = useState(false);
   const [detailId, setDetailId] = useState();
 
-  useEffect(()=>{
-    for(var i = 0; i < 5; i++){
-      setYourCards([...yourCards, champData[Math.floor(Math.random()*30)]])
-    } 
-  },[])
+  
+
+  useEffect(() => {
+    const newChampions: Champion[] = [];
+    const indexes: Set<number> = new Set(); // Using a Set to ensure uniqueness
+
+    while (indexes.size < 5) {
+      indexes.add(Math.floor(Math.random() * champData.length)); // Add random indexes to the Set
+    }
+
+    indexes.forEach(index => {
+      newChampions.push(champData[index]); // Fetch cards using the generated indexes
+    });
+
+    setYourCards(newChampions);
+  }, []);
+
+  // console.log(champData)
 
   const handelDetail = (id: any) => {
     setPopupOpen(true);
@@ -30,10 +43,12 @@ function Game() {
       <div className="flex flex-row flex-wrap justify-center gap-8 w-3/4 ml-auto mr-auto  mb-10 border-2 border-red-500">
         {yourCards.map((value, key) => (
           <div className="flex flex-col items-center gap-2 border-amber-500 border-2 rounded bg-white font-bold mt-5" key={key}>
-            <img className="w-32 border-amber-500" src={value.img} alt="" />
-            <p className="text-xs text-amber-500 align-lef mt-2">{value.name}</p>
-            <p className="text-xs text-green-400">{value.hp} Hp</p>
-            <p className="text-xs text-red-500 mb-2">{value.damage} Damage</p>
+            {value && value.img && (
+              <img className="w-32 border-amber-500" src={value.img} alt="" />
+            )}
+            <p className="text-xs text-amber-500 align-lef mt-2">{value?.name}</p>
+            <p className="text-xs text-green-400">{value?.hp} Hp</p>
+            <p className="text-xs text-red-500 mb-2">{value?.damage} Damage</p>
             <button onClick={() => handelDetail(key)}>Detail</button>
           </div>
         ))}
