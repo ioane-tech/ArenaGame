@@ -39,8 +39,8 @@ function Game() {
     setDetailId(id);
   };
   return (
-    <div>
-      <div className="flex flex-row flex-wrap justify-center gap-8 w-3/4 ml-auto mr-auto  mb-10 ">
+    <div className='flex flex-row items-center'>
+      <div className="flex flex-col overflow-auto w-32 my-8 ml-5 h-192">
         {yourCards &&
           yourCards.map((value, key) => (
             <div className="flex flex-col items-center gap-2 border-amber-500 border-2 rounded bg-gray-1000 font-bold mt-5" key={key}>
@@ -73,6 +73,13 @@ function Game() {
             })}
           </div>
         )}
+      </div>
+      <div className='grid grid-rows-6 grid-cols-2 gap-4 mt-5 ml-10'>
+          <div className='bg-red-400 w-32 h-64 border-amber-500 border-2 rounded row-span-2 col-start-2'>position 1</div>
+          <div className='bg-red-400 w-32 h-64 border-amber-500 border-2 rounded row-span-2 col-start-2'>position 2</div>
+          <div className='bg-red-400 w-32 h-64 border-amber-500 border-2 rounded row-span-2 col-start-2'>position 3</div>
+          <div className='bg-red-400 w-32 h-64 border-amber-500 border-2 rounded row-span-2 col-start-1 row-start-2'>position 4</div>
+          <div className='bg-red-400 w-32 h-64 border-amber-500 border-2 rounded row-span-2 col-start-1 row-start-4'>position 5</div>
       </div>
     </div>
   )
