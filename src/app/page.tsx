@@ -23,6 +23,12 @@ export default function Home() {
             Cards
           </button>
         </Link>
+
+        <Link href="/rules">
+          <button className="text-lg tracking-wide text-white border-2 border-amber-700 w-52 h-9 rounded bg-amber-500" >
+            Rules
+          </button>
+        </Link>
       </div>
     </div>
   );

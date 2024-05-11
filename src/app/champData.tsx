@@ -73,7 +73,7 @@ const champData: Champion[] = [
         hp: 500,
         damage: 200,
         abilityAvailable: false,
-                description:{
+        description:{
             geo:"",
             eng:'',
         }
