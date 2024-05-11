@@ -41,29 +41,33 @@ function Game() {
   return (
     <div className='flex flex-row items-center'>
       <div className="flex flex-col overflow-auto w-32 my-8 ml-5 h-192">
-        {yourCards&&
+        {yourCards &&
           yourCards.map((value, key) => (
-          <div className="flex flex-col items-center gap-2 border-amber-500 border-2 rounded bg-white font-bold mb-4" key={key}>
-            <img className="w-32 border-amber-500" src={value.img} alt="" />
-            <p className="text-xs text-amber-500 align-lef mt-2">{value.name}</p>
-            <p className="text-xs text-green-400">{value.hp} Hp</p>
-            <p className="text-xs text-red-500 mb-2">{value.damage} Damage</p>
-            <button onClick={() => handelDetail(key)}>Detail</button>
-          </div>
-        ))}
+            <div className="flex flex-col items-center gap-2 border-amber-500 border-2 rounded bg-gray-1000 font-bold mt-5" key={key}>
+              <img className="w-36 border-amber-500" src={value.img} alt="" />
+              <p className="text-xs text-gray-400 align-lef mt-2">{value.name}</p>
+              <div className='flex flex-row'>
+                <p className="text-xs text-red-500 mr-3">{value.hp} Hp</p>
+                <p className="text-xs text-yellow-500 mb-2">{value.damage} Dmg</p>
+              </div>
+              <button className='text-gray-400' onClick={() => handelDetail(key)}>Detail</button>
+            </div>
+          ))  
+        }
         {popupOpen && (
           <div className="fixed bg-black w-full h-full ">
-            {yourCards.map((value, key) => {
-              if (key === detailId) {
-                return (
-                  <div className="w-1/2 ml-auto mr-auto mt-10 flex flex-col items-center gap-2 border-amber-500 border-2 rounded bg-white font-bold" key={key}>
-                    <img className="w-2/4 border-amber-500" src={value.img} alt="" />
-                    <p className="text-lg text-amber-500 align-lef mt-2">{value.name}</p>
-                    <p className="text-lg text-green-400">{value.hp} Hp</p>
-                    <p className="text-lg text-red-500 mb-2">{value.damage} Damage</p>
-                    <button onClick={() => setPopupOpen(false)}>Close</button>
-                  </div>
-                );
+            {yourCards &&
+              yourCards.map((value, key) => {
+                if (key === detailId) {
+                  return (
+                    <div className="w-1/2 ml-auto mr-auto mt-10 flex flex-col items-center gap-2 border-amber-500 border-2 rounded bg-white font-bold" key={key}>
+                      <img className="w-2/4 border-amber-500" src={value.img} alt="" />
+                      <p className="text-lg text-amber-500 align-lef mt-2">{value.name}</p>
+                      <p className="text-lg text-green-400">{value.hp} Hp</p>
+                      <p className="text-lg text-red-500 mb-2">{value.damage} Damage</p>
+                      <button onClick={() => setPopupOpen(false)}>Close</button>
+                    </div>
+                  );
               }
               return null;
             })}
