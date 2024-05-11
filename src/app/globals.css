@@ -3,11 +3,29 @@
 @tailwind utilities;
 
 
+
 body{
     font-family: sans-serif;
     background-color: rgb(32, 32, 32);
 }
 
 @layer utilities {
-
+    ::-webkit-scrollbar-track {
+        @apply bg-transparent
+    }
+      
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        @apply bg-amber-500;
+    }
+      
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        @apply bg-amber-500;
+    }
+      
+    /* Set scrollbar width */
+    ::-webkit-scrollbar {
+        @apply w-1;
+    }
 }
