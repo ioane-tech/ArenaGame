@@ -28,4 +28,41 @@ body{
     ::-webkit-scrollbar {
         @apply w-1;
     }
+
+
+    .back_button{
+        @apply cursor-pointer absolute top-3 left-5 p-2 text-xs text-amber-500 border border-amber-500;
+    }
+
+
+
+    /* ****************detailed popup styles*/
+    .detailed_popup_bg{
+        @apply fixed left-0 top-0 bg-fadeBlack w-full h-full ;
+    }
+    .detailed_popup_container{
+        @apply w-1/2 h-4/5 ml-auto mr-auto mt-10 flex flex-col items-center gap-2 border-amber-500 border-2 rounded bg-commonGray font-bold overflow-y-auto;
+    }
+    .detailed_popup_img{
+        @apply w-2/4 border-amber-500 border-b-2;
+    }
+    .detailed_popup_name{
+        @apply text-lg text-gray-400 mt-2;
+    }
+    .detailed_popup_description{
+        @apply text-gray-300 text-center w-3/4;
+    }
+    .detailed_popup_close{
+        @apply text-gray-400 mb-5 mt-5;
+    }
+
+
+
+    /***************card style*/
+    .card_container{
+        @apply flex flex-col items-center gap-2 border-amber-500 border-2 rounded bg-transparent font-bold mt-5;
+    }
+    .card_img{
+        @apply w-40 border-amber-500 border-b;
+    }
 }
