@@ -3,6 +3,7 @@ interface Description {
     eng: string;
 }
 export interface Champion {
+    id: number;
     img: string;
     name: string;
     hp: number;
@@ -13,6 +14,7 @@ export interface Champion {
 
 const champData: Champion[] = [
     {
+        id:0,
         img: '/assets/ironGard.jpeg',
         name: "ironGard",
         hp: 1500,
@@ -24,6 +26,7 @@ const champData: Champion[] = [
         }
     },
     {
+        id:1,
         img:'/assets/Rafael.jpeg',
         name: "Rafael",
         hp: 1000,
@@ -35,6 +38,7 @@ const champData: Champion[] = [
         }
     },
     {
+        id:2,
         img:'/assets/Revenger.jpeg',
         name: "Revenger",
         hp: 1250,
@@ -46,6 +50,7 @@ const champData: Champion[] = [
         }
     },
     {
+        id:3,
         img:'/assets/DragonSkin.jpeg',
         name: "DragonSkin",
         hp: 1400,
@@ -57,6 +62,7 @@ const champData: Champion[] = [
         }
     },
     {
+        id:4,
         img:'/assets/Pantheron.jpeg',
         name: "Pantheron",
         hp: 1200,
@@ -68,6 +74,7 @@ const champData: Champion[] = [
         }
     },
     {
+        id:5,
         img:'/assets/PantherBlack.jpeg',
         name: "Black Panther",
         hp: 500,
@@ -79,6 +86,7 @@ const champData: Champion[] = [
         }
     },
     {
+        id:6,
         img:'/assets/Cacula.jpeg',
         name: "Cacula",
         hp: 1700,
@@ -90,6 +98,7 @@ const champData: Champion[] = [
         }
     },
     {
+        id:7,
         img:'/assets/Sdrakem.jpeg',
         name: "Sdrakem",
         hp: 1400,
@@ -101,6 +110,7 @@ const champData: Champion[] = [
         }
     },
     {
+        id:8,
         img:'/assets/Meilis.jpeg',
         name: "Meilis",
         hp: 1000,
@@ -112,6 +122,7 @@ const champData: Champion[] = [
         }
     },
     {
+        id:9,
         img:'/assets/Thornn.jpeg',
         name: "Thornn",
         hp: 1550,
@@ -123,6 +134,7 @@ const champData: Champion[] = [
         }
     },
     {
+        id:10,
         img:'/assets/Visioner.jpeg',
         name: "Visioner",
         hp: 1350,
@@ -134,6 +146,7 @@ const champData: Champion[] = [
         }
     },
     {
+        id:11,
         img:'/assets/Hurricane.jpeg',
         name: "Hurricane",
         hp: 1800,
@@ -145,6 +158,7 @@ const champData: Champion[] = [
         }
     },
     {
+        id:12,
         img:'/assets/Sespa.jpeg',
         name: "Sespa",
         hp: 1200,
@@ -156,6 +170,7 @@ const champData: Champion[] = [
         }
     },
     {
+        id:13,
         img:'/assets/Mouzer.jpeg',
         name: "Mouzer",
         hp: 1100,
@@ -167,6 +182,7 @@ const champData: Champion[] = [
         }
     },
     {
+        id:14,
         img:'/assets/Ars.jpeg',
         name: "Ars",
         hp: 900,
@@ -178,6 +194,7 @@ const champData: Champion[] = [
         }
     },
     // {
+            // id:15,
     //     img:'/assets/MoonLight.jpeg',
     //     name: "Moon light",
     //     hp: 1100,
@@ -189,6 +206,7 @@ const champData: Champion[] = [
     //     }
     // },
     {
+        id:16,
         img:'/assets/KingNolaran.jpeg',
         name: "King Nolaran",
         hp: 1400,
@@ -200,6 +218,7 @@ const champData: Champion[] = [
         }
     },
     // {
+    //     id:17,
     //     img:'/assets/Chaos.jpeg',
     //     name: "Chaos",
     //     hp: 1900,
@@ -211,6 +230,7 @@ const champData: Champion[] = [
     //     }
     // },
     {
+        id:18,
         img:'/assets/Gogothur.jpeg',
         name: "Gogothur",
         hp: 2200,
@@ -222,6 +242,7 @@ const champData: Champion[] = [
         }
     },
     // {
+    //     id:19,
     //     img:'/assets/Orion.jpeg',
     //     name: "Orion",
     //     hp: 1150,
@@ -233,6 +254,7 @@ const champData: Champion[] = [
     //     }
     // },
     {
+        id:20,
         img:'/assets/Magma.jpeg',
         name: "Magma",
         hp: 2050,
@@ -244,6 +266,7 @@ const champData: Champion[] = [
         }
     },
     {
+        id:21,
         img:'/assets/Meteorc.jpeg',
         name: "Meteorc",
         hp: 1800,
@@ -255,6 +278,7 @@ const champData: Champion[] = [
         }
     },
     {
+        id:22,
         img:'/assets/Groguard.jpeg',
         name: "Groguard",
         hp: 1350,
@@ -266,6 +290,7 @@ const champData: Champion[] = [
         }
     },
     // {
+    //     id:23,
     //     img:'/assets/Electrition.jpeg',
     //     name: "Electrition",
     //     hp: 1900,
@@ -277,6 +302,7 @@ const champData: Champion[] = [
     //     }
     // },
     // {
+    //     id:24,
     //     img:'/assets/Oull.jpeg',
     //     name: "Oull",
     //     hp: 1200,
@@ -288,6 +314,7 @@ const champData: Champion[] = [
     //     }
     // },
     // {
+    //     id:25,
     //     img:'/assets/Seismo.jpeg',
     //     name: "Seismo",
     //     hp: 1650,
@@ -299,6 +326,7 @@ const champData: Champion[] = [
     //     }
     // },
     // {
+        // id:26,
     //     img:'/assets/Pyrobadger.jpeg',
     //     name: "Pyrobadger",
     //     hp: 1600,
@@ -310,6 +338,7 @@ const champData: Champion[] = [
     //     }
     // },
     // {
+    //     id:27,
     //     img:"/assets/Aart'Adur.jpeg",
     //     name: "Aart'adur",
     //     hp: 1600,
@@ -321,6 +350,7 @@ const champData: Champion[] = [
     //     }
     // },
     // {
+    //     id:28,
     //     img:"/assets/Za'e.jpeg",
     //     name: "Za'e",
     //     hp: 200,
@@ -333,6 +363,7 @@ const champData: Champion[] = [
     //     //dodge 35%  display on front line when Aart adur kills someone
     // },
     // {
+    //     id:29
     //     img:"/assets/loyd&bobo.jpeg",
     //     name: "loyd&bobo",
     //     hp: 1700,
