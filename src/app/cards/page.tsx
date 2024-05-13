@@ -3,11 +3,12 @@
 import React, { useState } from 'react';
 import champData, { Champion } from '@/app/champData'; // Assuming champData is imported correctly
 import Link from 'next/link';
+import { useLanguage } from '../(Context)/LanguageContext';
+import { usePopup } from '../(Context)/DetailedPopupContext';
 
 function Cards() {
-  const [backLineLength, setBackLineLength] = useState();
-  const [popupOpen, setPopupOpen] = useState(false);
-  const [detailId, setDetailId] = useState();
+  const {language} =useLanguage()
+  const { popupOpen, setPopupOpen, detailId, setDetailId} =usePopup()
 
   const handelDetail = (id: any) => {
     setPopupOpen(true);
@@ -16,37 +17,55 @@ function Cards() {
 
   return (
     <div>
+      <Link 
+        href='/'
+        className="back_button"
+      >
+        {language === "geo"? "უკან" : "Back"}
+      </Link>
       
       <div className="flex flex-row flex-wrap justify-center gap-8 w-3/4 ml-auto mr-auto mb-10">
         {champData &&
           champData.map((value, key) => (
-            <div className="flex flex-col items-center gap-2 border-amber-500 border-2 rounded bg-gray-1000 font-bold mt-5" key={key}>
-              <img className="w-36 border-amber-500 border-b" src={value.img} alt="" />
-              <p className="text-xs text-gray-400 align-lef ">{value.name}</p>
+            <div className="card_container" key={key}>
+              <img className="card_img" src={value.img} alt="" />
+              <p className="text-xs text-gray-400">{value.name}</p>
               <div className='flex flex-row'>
                 <p className="text-xs text-red-500 mr-3">{value.hp} Hp</p>
                 <p className="text-xs text-yellow-500 mb-2">{value.damage} Dmg</p>
               </div>
             
-              <button className='text-gray-400' onClick={() => handelDetail(key)}>Detail</button>
+              <button 
+                className='text-gray-400 text-xs mb-1' 
+                onClick={() => handelDetail(value.id)}
+              >
+                {language === "geo"? "ინფორმაცია": "information"}
+              </button>
             </div>
           )) 
         }
         {popupOpen && (
-          <div className="fixed bg-black w-full h-full ">
+          <div className="detailed_popup_bg">
             {
               champData.map((value, key) => {
-                if (key === detailId) {
+                if (value.id === detailId) {
                   return (
-                    <div className="w-1/2 h-4/5 ml-auto mr-auto mt-10 flex flex-col items-center gap-2 border-amber-500 border-2 rounded bg-gray-1000 font-bold overflow-y-auto" key={key}>
-                      <img className="w-2/4 border-amber-500 border-b-2" src={value.img} alt="" />
-                      <p className="text-lg text-gray-400 align-lef mt-2">{value.name}</p>
+                    <div className="detailed_popup_container" key={key}>
+                      <img className="detailed_popup_img" src={value.img} alt="" />
+                      <p className="detailed_popup_name">{value.name}</p>
+                      
                       <div className='flex flex-row'>
                         <p className="text-red-500 mr-3">{value.hp} Hp</p>
                         <p className="text-yellow-500 mb-2">{value.damage} Dmg</p>
                       </div>
-                      <p className='text-gray-300 text-center w-3/4'>{value.description.eng}</p>
-                      <button className='text-gray-400 mb-5 mt-5' onClick={() => setPopupOpen(false)}>Close</button>
+
+                      <p className='detailed_popup_description'>
+                        {language === "geo"? value.description.geo :  value.description.eng}
+                      </p>
+
+                      <button className='detailed_popup_close' onClick={() => setPopupOpen(false)}>
+                        {language === "geo"? "დახურვა": "Close"}
+                      </button>
 
                     </div>
                   );

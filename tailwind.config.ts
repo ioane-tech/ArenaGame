@@ -13,6 +13,10 @@ const config: Config = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      backgroundColor:{
+        fadeBlack: "rgb(0,0,0,0.5)",
+        commonGray:'rgb(32, 32, 32)'
+      },
       height:{
         "screen-20":"20vh",
         "screen-40":"40vh",
