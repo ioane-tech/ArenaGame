@@ -24,7 +24,7 @@ const config: Config = {
         "screen-60":"60vh",
         "screen-80":"80vh",
         "192":"48rem",
-      }
+      },
     },
   },
   plugins: [],
