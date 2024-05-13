@@ -36,7 +36,7 @@ function Cards() {
               </div>
             
               <button 
-                className='text-gray-400 text-xs mb-1' 
+                className='text-gray-400 text-xs mb-2' 
                 onClick={() => handelDetail(value.id)}
               >
                 {language === "geo"? "ინფორმაცია": "information"}
@@ -47,6 +47,7 @@ function Cards() {
         {popupOpen && (
           <div className="detailed_popup_bg">
             {
+              champData &&
               champData.map((value, key) => {
                 if (value.id === detailId) {
                   return (
@@ -63,7 +64,7 @@ function Cards() {
                         {language === "geo"? value.description.geo :  value.description.eng}
                       </p>
 
-                      <button className='detailed_popup_close' onClick={() => setPopupOpen(false)}>
+                      <button className='detailed_popup_close ' onClick={() => setPopupOpen(false)}>
                         {language === "geo"? "დახურვა": "Close"}
                       </button>
 

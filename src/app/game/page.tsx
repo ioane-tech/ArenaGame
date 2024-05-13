@@ -60,8 +60,9 @@ function Game() {
     setDetailId(id);
   };
 
-  const handleSetCard =(position: number)=>{
-    if(selectedCard){
+  //card selection and set positions
+  const handleSetCard =(position: number, card: any)=>{
+    if(selectedCard && yourCards.length > 0){
       position == 1? setPosition1(selectedCard) 
       : position == 2? setPosition2(selectedCard) 
       : position == 3? setPosition3(selectedCard) 
@@ -70,7 +71,35 @@ function Game() {
       setSelectedCard(null)
       setYourCards(yourCards.filter(card => card.id !== selectedCard.id));
     }
+    else if(yourCards.length === 0){
+      setSelectedCard(card) 
+    }
   }
+
+// hit opponent cards
+const opponentHandler = (opponentCard: OneCard) => {
+  if (selectedCard && yourCards.length === 0) {
+    // Create a new array with updated opponent cards
+    const updatedOpponentCards = opponentCards.map(card => {
+      if (card.id === opponentCard.id) {
+        // Update the HP of the attacked card
+        return {
+          ...card,
+          hp: card.hp - selectedCard.damage
+        };
+      }
+       // Return the original card if it's not the attacked card
+      return card;
+    });
+    // Update opponentCards state with the modified array
+    const filteredOpponentCard = updatedOpponentCards.filter(card => card.hp > 0);
+
+    setOpponentCards(filteredOpponentCard);
+  }
+
+  setSelectedCard(null)
+};
+
   return (
     <div className='flex flex-row items-center'>
 
@@ -82,7 +111,7 @@ function Game() {
       </Link>
 
 
-      <div className="flex flex-col overflow-auto w-40 my-8 ml-5 h-screen-80">
+      <div className="flex flex-col overflow-auto my-8 ml-5 mt-20 h-screen-80">
         {yourCards &&
           yourCards.map((value, key) => (
             <div
@@ -112,6 +141,7 @@ function Game() {
         {popupOpen && (
           <div className="detailed_popup_bg">
             {
+              champData &&
               champData.map((value, key) => {
                 if (value.id === detailId) {
                   return (
@@ -141,9 +171,11 @@ function Game() {
           </div>
         )}
       </div>
+
+      {/*********Your card positions */}
       <div className='grid grid-rows-6 grid-cols-2 gap-4 mt-5 ml-10 h-1/2 cursor-pointer'>
           <div 
-            onClick={() => handleSetCard(1)}
+            onClick={() => handleSetCard(1, position1)}
             className='w-40 h-58 border-amber-500 border-2 rounded row-span-2 col-start-2'
           >
             {
@@ -155,7 +187,7 @@ function Game() {
           </div>
 
           <div 
-            onClick={() => handleSetCard(2)}
+            onClick={() => handleSetCard(2, position2)}
             className='w-40 h-58 border-amber-500 border-2 rounded row-span-2 col-start-2'
           >
             {
@@ -167,7 +199,7 @@ function Game() {
           </div>
 
           <div 
-            onClick={() => handleSetCard(3)}
+            onClick={() => handleSetCard(3, position3)}
             className='w-40 h-58 border-amber-500 border-2 rounded row-span-2 col-start-2'
           >
             {
@@ -179,7 +211,7 @@ function Game() {
           </div>
 
           <div
-            onClick={() => handleSetCard(4)} 
+            onClick={() => handleSetCard(4, position4)} 
             className='w-40 h-58 border-amber-500 border-2 rounded row-span-2 col-start-1 row-start-2'
           >
             {
@@ -191,7 +223,7 @@ function Game() {
           </div>
 
           <div 
-            onClick={() => handleSetCard(5)}
+            onClick={() => handleSetCard(5, position5)}
             className='w-40 h-58 border-amber-500 border-2 rounded row-span-2 col-start-1 row-start-4'
           >
             {
@@ -202,40 +234,80 @@ function Game() {
             }
           </div>
       </div>
+
+
+
+      {/*********opponent cards */}
       <div className='flex flex-col ml-auto mr-32'>
         {opponentCards &&
-          opponentCards.map((value, key) => (
-            <div className="flex flex-col items-center gap-2 border-amber-500 border-2 rounded bg-gray-1000 font-bold mt-5" key={key}>
-              <img className="w-36 border-amber-500" src={value.img} alt="" />
-              <p className="text-xs text-gray-400 align-lef mt-2">{value.name}</p>
-              <div className='flex flex-row'>
-                <p className="text-xs text-red-500 mr-3">{value.hp} Hp</p>
-                <p className="text-xs text-yellow-500 mb-2">{value.damage} Dmg</p>
+            opponentCards.map((value, key) => (
+              <div
+                onClick={()=>opponentHandler(value)}
+                className="card_container cursor-pointer"
+                key={key}
+              >
+                <img className="card_img" src={value.img} alt="" />
+
+                <div className='flex flex-row items-center mt-2'>
+                  <p className="text-xs text-gray-400 mr-2">{value.name}</p>
+                  <button 
+                    className='bg-transparent border border-amber-500 text-green-400 text-xs rounded w-4 h-4 mb-1' 
+                    onClick={() => handleDetail(value.id)}
+                  >
+                    {language === "geo"? "ი": "i"}
+                  </button>
+                </div>
+
+                <div className='flex flex-row'>
+                  <p className="text-xs text-red-500 mr-3">{value.hp} Hp</p>
+                  <p className="text-xs text-yellow-500 mb-2">{value.damage} Dmg</p>
+                </div>
               </div>
-              <button className='text-gray-400' onClick={() => handleDetail(key)}>Detail</button>
-            </div>
-          ))  
-        }
-        {popupOpen && (
-          <div className="fixed bg-black w-full h-full ">
-            {opponentCards &&
-              opponentCards.map((value, key) => {
-                if (key === detailId) {
+            ))  
+          }
+         {popupOpen && (
+          <div className="detailed_popup_bg">
+            {
+              champData &&
+              champData.map((value, key) => {
+                if (value.id === detailId) {
                   return (
-                    <div className="w-1/2 ml-auto mr-auto mt-10 flex flex-col items-center gap-2 border-amber-500 border-2 rounded bg-white font-bold" key={key}>
-                      <img className="w-2/4 border-amber-500" src={value.img} alt="" />
-                      <p className="text-lg text-amber-500 align-lef mt-2">{value.name}</p>
-                      <p className="text-lg text-green-400">{value.hp} Hp</p>
-                      <p className="text-lg text-red-500 mb-2">{value.damage} Damage</p>
-                      <button onClick={() => setPopupOpen(false)}>Close</button>
+                    <div className="detailed_popup_container" key={key}>
+                      <img className="detailed_popup_img" src={value.img} alt="" />
+                      <p className="detailed_popup_name">{value.name}</p>
+                      
+                      <div className='flex flex-row'>
+                        <p className="text-red-500 mr-3">{value.hp} Hp</p>
+                        <p className="text-yellow-500 mb-2">{value.damage} Dmg</p>
+                      </div>
+
+                      <p className='detailed_popup_description'>
+                        {language === "geo"? value.description.geo :  value.description.eng}
+                      </p>
+
+                      <button className='detailed_popup_close' onClick={() => setPopupOpen(false)}>
+                        {language === "geo"? "დახურვა": "Close"}
+                      </button>
+
                     </div>
                   );
-              }
-              return null;
-            })}
+                }
+                return null;
+              })  
+            }
           </div>
         )}
       </div>
+
+
+      {/** war swords image */}
+      {
+        opponentCards.length === 0 &&
+        <div className='absolute left-1/3 top-66 flex flex-col items-center'>
+          <img className='w-66' src="/assets/warSwords.png" alt="" />
+          <p className='text-4xl text-amber-500'>You are victorious on War Arena!</p>
+        </div>
+      }
     </div>
   )
 }
