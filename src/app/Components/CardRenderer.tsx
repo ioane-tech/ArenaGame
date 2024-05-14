@@ -1,7 +1,7 @@
 'use client'
 import React from 'react'
-import { useLanguage } from './(Context)/LanguageContext'
-import { usePopup } from './(Context)/DetailedPopupContext';
+import { useLanguage } from '../(Context)/LanguageContext'
+import { usePopup } from '../(Context)/DetailedPopupContext';
 
 function CardRenderer(card:any) {
   const {language} = useLanguage()
