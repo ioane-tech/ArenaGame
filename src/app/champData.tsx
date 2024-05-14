@@ -15,8 +15,8 @@ export interface Champion {
 const champData: Champion[] = [
     {
         id:0,
-        img: '/assets/ironGard.jpeg',
-        name: "ironGard",
+        img: '/assets/IronGard.jpeg',
+        name: "IronGard",
         hp: 1500,
         damage: 200,
         abilityAvailable: true,
@@ -33,7 +33,7 @@ const champData: Champion[] = [
         damage: 250,
         abilityAvailable: true,
         description:{
-            geo:"პასივი: როდესაც განახორციელებს ნებისმიერ დარტყმას იმატებს 100 სიცოცხლეს.",
+            geo:"პასიური უნარი: როდესაც განახორციელებს ნებისმიერ დარტყმას იმატებს 100 სიცოცხლეს.",
             eng:'passive: When he makes demage he heals himself by 100 Hp.',
         }
     },
@@ -45,7 +45,7 @@ const champData: Champion[] = [
         damage: 200,
         abilityAvailable: true,
         description:{
-            geo:"პასივი: თუ მოწინააღმდეგე მოგიკლავს ნებისმიერ კარტს, იმ კონკრეტულ მოწინააღმდეგეს Revenger აკლებს 400 სიცოცხლეს ყოველ დარტყმაზე.",
+            geo:"პასიური უნარი: თუ მოწინააღმდეგე მოგიკლავს ნებისმიერ კარტს, იმ კონკრეტულ მოწინააღმდეგეს Revenger აკლებს 400 სიცოცხლეს ყოველ დარტყმაზე.",
             eng:'passive: if an enemy kills any of your card, on that enemy Revenger will cause 400 Dmg on every hit.',
         }
     },
@@ -57,7 +57,7 @@ const champData: Champion[] = [
         damage: 200,
         abilityAvailable: true,
         description:{
-            geo:"პასივი: როდესაც სიცოცხლე გაუხდება 700 ან ნაკლები, მასზე ყველა დარტყმა ნახევრდება.",
+            geo:"პასიური უნარი: როდესაც სიცოცხლე გაუხდება 700 ან ნაკლები, მასზე ყველა დარტყმა ნახევრდება.",
             eng:'passive: when he reaches 700 Hp or less, he tackes half Dmg on every hit.',
         }
     },
@@ -129,7 +129,7 @@ const champData: Champion[] = [
         damage: 200,
         abilityAvailable: true,
         description:{
-            geo:"პასივი: რამდენსაც დააკლებს მოწინააღმდეგე იმის ნახევარი თვითონაც აკლდება.",
+            geo:"პასიური უნარი: რამდენსაც დააკლებს მოწინააღმდეგე იმის ნახევარი თვითონაც აკლდება.",
             eng:'passive: As much as the opponent Demages Thornn, opponent also takes half of its Dmg.',
         }
     },
@@ -189,7 +189,7 @@ const champData: Champion[] = [
         damage: 200,
         abilityAvailable: true,
         description:{
-            geo:"პასივი: როდესაც ნებისმიერი მოწინააღმდეგე მოკვდება Ars იმატებს 200 სიცოცხლეს და დარტყმა ეზრდება 100 -ით, ეს ხდება იმდენჯერ რამდენჯერაც მოწინააღმდეგის კარტი მოკვდება.",
+            geo:"პასიური უნარი: როდესაც ნებისმიერი მოწინააღმდეგე მოკვდება Ars იმატებს 200 სიცოცხლეს და დარტყმა ეზრდება 100 -ით, ეს ხდება იმდენჯერ რამდენჯერაც მოწინააღმდეგის კარტი მოკვდება.",
             eng:'passive: When any opponent dies, Ars gains 200 Hp and increase Dmg by 100, this happens every time when the opponents card dies.',
         }
     },
@@ -213,7 +213,7 @@ const champData: Champion[] = [
         damage: 200,
         abilityAvailable: true,
         description:{
-            geo:"პასივი: როდესაც KingNolaran მოკლავს მოწინააღმდეგეს ყველა მოწინააღმდეგეს აკლდება 150 სიცოცხლე. თუ თვითნ მოკვდა KingNolaran ამ შემთხვევაში ყველა მოწინააღმდეგეს აკლდება 100 სიცოცხლე.",
+            geo:"პასიური უნარი: როდესაც KingNolaran მოკლავს მოწინააღმდეგეს ყველა მოწინააღმდეგეს აკლდება 150 სიცოცხლე. თუ თვითნ მოკვდა KingNolaran ამ შემთხვევაში ყველა მოწინააღმდეგეს აკლდება 100 სიცოცხლე.",
             eng:'Passive: When KingNolaran kills an opponent, all opponents will lose 150 Hp. If KingNolaran dies, all opponents lose 100 Hp.',
         }
     },
@@ -261,7 +261,7 @@ const champData: Champion[] = [
         damage: 150,
         abilityAvailable: true,
         description:{
-            geo:"შესაძლებლობა: რომელიმე მოწინააღმდეგეს აკლებს 300 სიცოცხლეს და იმატებს 200 სიცოცხლეს.  პასივი: ვინც დაარტყავს Magma- ს თვითონაც აკლდება 100 სიცოცხლე.",
+            geo:"შესაძლებლობა: რომელიმე მოწინააღმდეგეს აკლებს 300 სიცოცხლეს და იმატებს 200 სიცოცხლეს.  პასიური უნარი: ვინც დაარტყავს Magma- ს თვითონაც აკლდება 100 სიცოცხლე.",
             eng:'Ability: deals 300 Hp on one opponent and gains 200 Hp. Passive: Anyone that hits Magma also loses 100 Hp.',
         }
     },

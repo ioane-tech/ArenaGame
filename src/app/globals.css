@@ -66,3 +66,25 @@ body{
         @apply w-40 border-amber-500 border-b;
     }
 }
+
+.rules-container{
+    height:100vh;
+    background-image: url("/assets/rulesScrool.png");
+    background-repeat: no-repeat;
+    background-position-x: center;
+    background-position-y: 60px;
+    background-size: 90vw clamp(500px, 80vh, 60vw);
+}
+
+.rules{
+    position: absolute;
+    top: max(25vh, 180px);
+    left: 33.333333%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    font-size: 1.125rem;
+    width: 33.333333%;
+    height: 50%;
+    overflow-y: auto;
+}
