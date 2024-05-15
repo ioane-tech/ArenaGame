@@ -146,7 +146,7 @@ const opponentHandler = (opponentCard: OneCard) => {
       <div className='grid grid-rows-6 grid-cols-2 gap-4 mt-5 ml-10 h-1/2 cursor-pointer'>
           <div 
             onClick={() => handleSetCard(1, position1)}
-            className='w-40 h-58 border-amber-500 border-2 rounded row-span-2 col-start-2'
+            className={`min-w-32 h-58 ${position1 ? '' : 'border-amber-500 border-2'} rounded row-span-2 col-start-2`}
           >
             {
               position1?
@@ -158,7 +158,7 @@ const opponentHandler = (opponentCard: OneCard) => {
 
           <div 
             onClick={() => handleSetCard(2, position2)}
-            className='w-40 h-58 border-amber-500 border-2 rounded row-span-2 col-start-2'
+            className={`min-w-32 h-58 ${position2 ? '' : 'border-amber-500 border-2'} rounded row-span-2 col-start-2`}
           >
             {
               position2?
@@ -170,7 +170,7 @@ const opponentHandler = (opponentCard: OneCard) => {
 
           <div 
             onClick={() => handleSetCard(3, position3)}
-            className='w-40 h-58 border-amber-500 border-2 rounded row-span-2 col-start-2'
+            className={`min-w-32 h-58 ${position3 ? '' : 'border-amber-500 border-2'} rounded row-span-2 col-start-2`}
           >
             {
               position3?
@@ -182,7 +182,7 @@ const opponentHandler = (opponentCard: OneCard) => {
 
           <div
             onClick={() => handleSetCard(4, position4)} 
-            className='w-40 h-58 border-amber-500 border-2 rounded row-span-2 col-start-1 row-start-2'
+            className={`min-w-32 h-58 ${position4 ? '' : 'border-amber-500 border-2'} rounded row-span-2 col-start-1 row-start-2`}
           >
             {
               position4?
@@ -194,7 +194,7 @@ const opponentHandler = (opponentCard: OneCard) => {
 
           <div 
             onClick={() => handleSetCard(5, position5)}
-            className='w-40 h-58 border-amber-500 border-2 rounded row-span-2 col-start-1 row-start-4'
+            className={`min-w-32 h-58  ${position5 ? '' : 'border-amber-500 border-2'} rounded row-span-2 col-start-1 row-start-4`}
           >
             {
               position5?

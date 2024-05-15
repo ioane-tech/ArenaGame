@@ -13,8 +13,8 @@ function CardRenderer(card:any) {
   };
   return (
     <div>
-      <div className="flex flex-col items-center gap-2 font-bold">
-        <img className="w-40 border-amber-500 border-b" src={card.card.img} alt="" />
+      <div className="card_container">
+        <img className="card_img" src={card.card.img} alt="" />
     
         <div className='flex flex-row items-center mt-2'>
           <p className="text-xs text-gray-400 mr-2">{card.card.name}</p>
