@@ -1,6 +1,5 @@
 'use client'
 
-import '../globals.css'
 import React from 'react'
 import { useLanguage } from '../(Context)/LanguageContext'
 import Link from 'next/link'
@@ -10,7 +9,7 @@ function Rules() {
   const {language} = useLanguage()
 
   return (
-    <div className='rules-container'>
+    <div className='rules_container'>
       <Link 
         href='/'
         className="back_button"

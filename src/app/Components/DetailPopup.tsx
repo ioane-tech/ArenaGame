@@ -8,7 +8,7 @@ function DetailPopup() {
     const {popupOpen, setPopupOpen, detailId, setDetailId} = usePopup()
 
     return (
-        <div className="detailed_popup_bg">
+        <div className="detailed_popup_bg" onClick={() => setPopupOpen(false)}>
         {
             champData &&
             champData.map((value, key) => {

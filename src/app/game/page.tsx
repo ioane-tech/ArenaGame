@@ -128,7 +128,7 @@ const opponentHandler = (opponentCard: OneCard) => {
                   className='bg-transparent border border-amber-500 text-green-400 text-xs rounded w-4 h-4 mb-1' 
                   onClick={() => handleDetail(value.id)}
                 >
-                  {language === "geo"? "ი": "i"}
+                  i
                 </button>
               </div>
 
@@ -224,7 +224,7 @@ const opponentHandler = (opponentCard: OneCard) => {
                     className='bg-transparent border border-amber-500 text-green-400 text-xs rounded w-4 h-4 mb-1' 
                     onClick={() => handleDetail(value.id)}
                   >
-                    {language === "geo"? "ი": "i"}
+                    i
                   </button>
                 </div>
 
