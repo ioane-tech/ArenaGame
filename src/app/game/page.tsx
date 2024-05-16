@@ -252,9 +252,17 @@ const opponentHandler = (opponentCard: Champion) => {
       {/** war swords image */}
       {
         opponentCards.length === 0 &&
-        <div className='absolute left-1/3 top-66 flex flex-col items-center'>
-          <img className='w-66' src="/assets/warSwords.png" alt="" />
-          <p className='text-4xl text-amber-500'>You are victorious on War Arena!</p>
+        <div className='fixed left-0 top-0 bg-fadeBlack w-full h-full '>
+          <div className='flex flex-col items-center w-1/2 mr-auto ml-auto mt-20'>
+            <img className='w-66' src="/assets/warSwords.png" alt="" />
+            <p className='text-4xl text-amber-500'>You are victorious on War Arena!</p>
+            <button 
+              onClick={()=>window.location.reload()}
+              className='text-2xl text-amber-500 w-48 h-10 rounded border border-amber-500 mt-10'
+            >
+              play again!
+            </button>
+          </div>
         </div>
       }
     </div>
