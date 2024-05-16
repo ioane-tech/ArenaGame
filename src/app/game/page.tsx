@@ -14,27 +14,22 @@ interface Description {
   geo: string;
   eng: string;
 }
-type OneCard = {
-  id: number;
-  img: string;
-  name: string;
-  hp: number;
-  damage: number;
-  abilityAvailable: boolean;
-  description: Description;
+
+interface PositionsState {
+  position1: Champion;
+  position2: Champion;
+  position3: Champion;
+  position4: Champion;
+  position5: Champion;
 }
 
 function Game() {
   const {language} =useLanguage()
   const {popupOpen, setPopupOpen, detailId, setDetailId} = usePopup()
 
-  const [position1, setPosition1] = useState<OneCard>()
-  const [position2, setPosition2] = useState<OneCard>()
-  const [position3, setPosition3] = useState<OneCard>()
-  const [position4, setPosition4] = useState<OneCard>()
-  const [position5, setPosition5] = useState<OneCard>()
+  const [positions, setPositions] = useState<PositionsState>()
 
-  const [selectedCard, setSelectedCard] = useState<OneCard | null>(null)
+  const [selectedCard, setSelectedCard] = useState<Champion | null>(null)
 
   const [yourCards,setYourCards] = useState<Champion[]>([])
   const [opponentCards,setOpponentCards] = useState<Champion[]>([champData[16],champData[17]])
@@ -60,25 +55,40 @@ function Game() {
     setPopupOpen(true);
     setDetailId(id);
   };
-
+  
+  
   //card selection and set positions
-  const handleSetCard =(position: number, card: any)=>{
+  const handleSetCard =(position: any, positionName: keyof PositionsState)=>{
     if(selectedCard && yourCards.length > 0){
-      position == 1? setPosition1(selectedCard) 
-      : position == 2? setPosition2(selectedCard) 
-      : position == 3? setPosition3(selectedCard) 
-      : position == 4? setPosition4(selectedCard) 
-      : setPosition5(selectedCard) 
-      setSelectedCard(null)
-      setYourCards(yourCards.filter(card => card.id !== selectedCard.id));
+      if(!position){
+        setPositions((prevPositions: PositionsState | null | undefined) => ({
+          ...(prevPositions || {}), // Ensure prevPositions is not null or undefined
+          [positionName]: selectedCard,
+        }) as PositionsState);
+      }else{
+        setPositions((prevPositions: PositionsState | null | undefined) => {
+          if(prevPositions){
+            setYourCards([...yourCards, prevPositions[positionName]]);
+          }
+          return {
+            ...(prevPositions || {}),
+            [positionName]: selectedCard,
+          } as PositionsState;
+        });
+      }
     }
     else if(yourCards.length === 0){
-      setSelectedCard(card) 
+      setSelectedCard(position) 
     }
   }
 
+  useEffect(() => {
+    setYourCards(prevYourCards => prevYourCards.filter(card => card.id !== selectedCard?.id));
+    setSelectedCard(null)
+  }, [positions]);
+
 // hit opponent cards
-const opponentHandler = (opponentCard: OneCard) => {
+const opponentHandler = (opponentCard: Champion) => {
   if (selectedCard && yourCards.length === 0) {
     // Create a new array with updated opponent cards
     const updatedOpponentCards = opponentCards.map(card => {
@@ -145,60 +155,60 @@ const opponentHandler = (opponentCard: OneCard) => {
       {/*********Your card positions */}
       <div className='grid grid-rows-6 grid-cols-2 gap-4 mt-5 ml-10 h-1/2 cursor-pointer'>
           <div 
-            onClick={() => handleSetCard(1, position1)}
-            className={`min-w-32 h-58 ${position1 ? '' : 'border-amber-500 border-2'} rounded row-span-2 col-start-2`}
+            onClick={() => handleSetCard(positions?.position1,"position1")}
+            className={`min-w-32 h-58 ${positions?.position1 ? '' : 'border-amber-500 border-2'} rounded row-span-2 col-start-2`}
           >
             {
-              position1?
-                <CardRenderer card = {position1}/>
+              positions?.position1?
+                <CardRenderer card = {positions?.position1}/>
                 :
                 <p className='text-white ml-2'>position 1</p>
             }
           </div>
 
           <div 
-            onClick={() => handleSetCard(2, position2)}
-            className={`min-w-32 h-58 ${position2 ? '' : 'border-amber-500 border-2'} rounded row-span-2 col-start-2`}
+            onClick={() => handleSetCard(positions?.position2,"position2")}
+            className={`min-w-32 h-58 ${positions?.position2 ? '' : 'border-amber-500 border-2'} rounded row-span-2 col-start-2`}
           >
             {
-              position2?
-                <CardRenderer card = {position2}/>
+              positions?.position2?
+                <CardRenderer card = {positions?.position2}/>
                 :
                 <p className='text-white ml-2'>position 2</p>
             }
           </div>
 
           <div 
-            onClick={() => handleSetCard(3, position3)}
-            className={`min-w-32 h-58 ${position3 ? '' : 'border-amber-500 border-2'} rounded row-span-2 col-start-2`}
+            onClick={() => handleSetCard(positions?.position3,"position3")}
+            className={`min-w-32 h-58 ${positions?.position3 ? '' : 'border-amber-500 border-2'} rounded row-span-2 col-start-2`}
           >
             {
-              position3?
-                <CardRenderer card = {position3}/>
+              positions?.position3?
+                <CardRenderer card = {positions?.position3}/>
                 :
                 <p className='text-white ml-2'>position 3</p>
             }
           </div>
 
           <div
-            onClick={() => handleSetCard(4, position4)} 
-            className={`min-w-32 h-58 ${position4 ? '' : 'border-amber-500 border-2'} rounded row-span-2 col-start-1 row-start-2`}
+            onClick={() => handleSetCard(positions?.position4,"position4")} 
+            className={`min-w-32 h-58 ${positions?.position4 ? '' : 'border-amber-500 border-2'} rounded row-span-2 col-start-1 row-start-2`}
           >
             {
-              position4?
-                <CardRenderer card = {position4}/>
+              positions?.position4?
+                <CardRenderer card = {positions?.position4}/>
                 :
                 <p className='text-white ml-2'>position 4</p>
             }
           </div>
 
           <div 
-            onClick={() => handleSetCard(5, position5)}
-            className={`min-w-32 h-58  ${position5 ? '' : 'border-amber-500 border-2'} rounded row-span-2 col-start-1 row-start-4`}
+            onClick={() => handleSetCard(positions?.position5,"position5")}
+            className={`min-w-32 h-58  ${positions?.position5 ? '' : 'border-amber-500 border-2'} rounded row-span-2 col-start-1 row-start-4`}
           >
             {
-              position5?
-                <CardRenderer card = {position5}/>
+              positions?.position5?
+                <CardRenderer card = {positions?.position5}/>
                 :
                 <p className='text-white ml-2'>position 5</p>
             }
