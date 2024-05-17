@@ -104,6 +104,12 @@ const opponentHandler = (opponentCard: Champion) => {
     });
     // Update opponentCards state with the modified array
     const filteredOpponentCard = updatedOpponentCards.filter(card => card.hp > 0);
+    // if(filteredOpponentCard.length < opponentCards.length){
+    //  ნიშნავს რო ვიღაც მოკვდა და hasKilled უნდა გახდეს true
+    // useEffect()
+
+    //abilitis funqciashi argumentis gadacema
+    // }
 
     setOpponentCards(filteredOpponentCard);
   }
@@ -263,6 +269,14 @@ const opponentHandler = (opponentCard: Champion) => {
               play again!
             </button>
           </div>
+        </div>
+      }
+
+      {
+        (selectedCard && yourCards.length === 0) &&
+        <div className='flex flex-col gap-5 items-center absolute left-1/3'>
+          <p className='text-amber-500 text-3xl'>{selectedCard.name}</p>
+          <button className='text-2xl text-amber-500 w-48 h-10 rounded border border-amber-500 mt-10'>abbility</button>
         </div>
       }
     </div>
