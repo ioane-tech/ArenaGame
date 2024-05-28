@@ -27,15 +27,17 @@ function Game() {
   const {language} =useLanguage()
   const {popupOpen, setPopupOpen, detailId, setDetailId} = usePopup()
 
-  const [positions, setPositions] = useState<PositionsState>()
 
   const [selectedCard, setSelectedCard] = useState<Champion | null>(null)
 
   const [yourCards,setYourCards] = useState<Champion[]>([])
-  const [opponentCards,setOpponentCards] = useState<Champion[]>([champData[16],champData[17]])
-  const [backLineLength, setBackLineLength] = useState();
+  const [positions, setPositions] = useState<PositionsState>()
+
+  const [opponentCards,setOpponentCards] = useState<Champion[]>([])
+  const [opponentPositions,setOpponentPositions] =useState<PositionsState>()
   
 
+  //your cards
   useEffect(() => {
     const newChampions: Champion[] = [];
     const indexes: Set<number> = new Set(); // Using a Set to ensure uniqueness
@@ -49,7 +51,25 @@ function Game() {
     });
 
     setYourCards(newChampions);
+
   }, []);
+  //opponent cards
+  useEffect(() => {
+    const newChampions: Champion[] = [];
+    const indexes: Set<number> = new Set(); // Using a Set to ensure uniqueness
+
+    while (indexes.size < 5) {
+      indexes.add(Math.floor(Math.random() * champData.length)); // Add random indexes to the Set
+    }
+
+    indexes.forEach(index => {
+      newChampions.push(champData[index]); // Fetch cards using the generated indexes
+    });
+
+    setOpponentCards(newChampions);
+
+  }, []);
+
 
   const handleDetail = (id: any) => {
     setPopupOpen(true);
@@ -57,7 +77,7 @@ function Game() {
   };
   
   
-  //card selection and set positions
+  // your cards card selection and set positions
   const handleSetCard =(position: any, positionName: keyof PositionsState)=>{
     if(selectedCard && yourCards.length > 0){
       if(!position){
@@ -81,11 +101,42 @@ function Game() {
       setSelectedCard(position) 
     }
   }
+  //opponent card selectiron and set position
+  const handleSetOpponentCard =(position: any, positionName: keyof PositionsState)=>{
+    if(selectedCard && opponentCards.length > 0){
+      if(!position){
+        setOpponentPositions((prevPositions: PositionsState | null | undefined) => ({
+          ...(prevPositions || {}), // Ensure prevPositions is not null or undefined
+          [positionName]: selectedCard,
+        }) as PositionsState);
+      }else{
+        setOpponentPositions((prevPositions: PositionsState | null | undefined) => {
+          if(prevPositions){
+            setOpponentCards([...opponentCards, prevPositions[positionName]]);
+          }
+          return {
+            ...(prevPositions || {}),
+            [positionName]: selectedCard,
+          } as PositionsState;
+        });
+      }
+    }
+    else if(opponentCards.length === 0){
+      setSelectedCard(position) 
+    }
+  }
 
+  //filter your cards after positioning
   useEffect(() => {
     setYourCards(prevYourCards => prevYourCards.filter(card => card.id !== selectedCard?.id));
     setSelectedCard(null)
   }, [positions]);
+  //filter opponent cards after positioning
+  useEffect(() => {
+    setOpponentCards(prevYourCards => prevYourCards.filter(card => card.id !== selectedCard?.id));
+    setSelectedCard(null)
+  }, [opponentPositions]);
+
 
 // hit opponent cards
 const opponentHandler = (opponentCard: Champion) => {
@@ -127,7 +178,7 @@ const opponentHandler = (opponentCard: Champion) => {
         {language === "geo"? "უკან" : "Back"}
       </Link>
 
-
+      {/**your cards */}
       <div className="flex flex-col overflow-auto my-8 ml-5 mt-20 h-screen-80">
         {yourCards &&
           yourCards.map((value, key) => (
@@ -155,8 +206,9 @@ const opponentHandler = (opponentCard: Champion) => {
             </div>
           ))  
         }
-        {popupOpen && <DetailPopup/>}
       </div>
+      
+      {popupOpen && <DetailPopup/>}
 
       {/*********Your card positions */}
       <div className='grid grid-rows-6 grid-cols-2 gap-4 mt-5 ml-10 h-1/2 cursor-pointer'>
@@ -223,12 +275,72 @@ const opponentHandler = (opponentCard: Champion) => {
 
 
 
+
+      {/*********Opponent card positions */}
+      <div className='grid grid-rows-6 grid-cols-2 gap-4 mt-5 ml-auto mr-10 h-1/2 cursor-pointer'>
+        <div 
+          onClick={() => handleSetOpponentCard(opponentPositions?.position1, "position1")}
+          className={`min-w-32 h-58 ${opponentPositions?.position1 ? '' : 'border-amber-500 border-2'} rounded row-span-2 col-start-1`}
+        >
+          {opponentPositions?.position1 ? (
+            <CardRenderer card={opponentPositions?.position1} />
+          ) : (
+            <p className='text-white ml-2'>position 1</p>
+          )}
+        </div>
+
+        <div 
+          onClick={() => handleSetOpponentCard(opponentPositions?.position2, "position2")}
+          className={`min-w-32 h-58 ${opponentPositions?.position2 ? '' : 'border-amber-500 border-2'} rounded row-span-2 col-start-1 row-start-2`}
+        >
+          {opponentPositions?.position2 ? (
+            <CardRenderer card={opponentPositions?.position2} />
+          ) : (
+            <p className='text-white ml-2'>position 2</p>
+          )}
+        </div>
+
+        <div 
+          onClick={() => handleSetOpponentCard(opponentPositions?.position3, "position3")}
+          className={`min-w-32 h-58 ${opponentPositions?.position3 ? '' : 'border-amber-500 border-2'} rounded row-span-2 col-start-1 row-start-4`}
+        >
+          {opponentPositions?.position3 ? (
+            <CardRenderer card={opponentPositions?.position3} />
+          ) : (
+            <p className='text-white ml-2'>position 3</p>
+          )}
+        </div>
+
+        <div
+          onClick={() => handleSetOpponentCard(opponentPositions?.position4, "position4")} 
+          className={`min-w-32 h-58 ${opponentPositions?.position4 ? '' : 'border-amber-500 border-2'} rounded row-span-2 col-start-2 row-start-2`}
+        >
+          {opponentPositions?.position4 ? (
+            <CardRenderer card={opponentPositions?.position4} />
+          ) : (
+            <p className='text-white ml-2'>position 4</p>
+          )}
+        </div>
+
+        <div 
+          onClick={() => handleSetOpponentCard(opponentPositions?.position5, "position5")}
+          className={`min-w-32 h-58 ${opponentPositions?.position5 ? '' : 'border-amber-500 border-2'} rounded row-span-2 col-start-2 row-start-4`}
+        >
+          {opponentPositions?.position5 ? (
+            <CardRenderer card={opponentPositions?.position5} />
+          ) : (
+            <p className='text-white ml-2'>position 5</p>
+          )}
+        </div>
+      </div>
+
       {/*********opponent cards */}
-      <div className='flex flex-col ml-auto mr-32'>
+      <div className='flex flex-col overflow-auto mt-20 mr-5 h-screen-80'>
         {opponentCards &&
             opponentCards.map((value, key) => (
               <div
-                onClick={()=>opponentHandler(value)}
+              // opponentHandler(value)
+                onClick={()=>setSelectedCard(value)}
                 className="card_container cursor-pointer"
                 key={key}
               >
@@ -253,6 +365,11 @@ const opponentHandler = (opponentCard: Champion) => {
           }
          {popupOpen && <DetailPopup />}
       </div>
+        
+
+
+
+
 
 
       {/** war swords image */}
