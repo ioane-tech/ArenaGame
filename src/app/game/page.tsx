@@ -23,6 +23,8 @@ interface PositionsState {
   position5: Champion;
 }
 
+///////////////////////////////////////////////chemi damatebuli
+
 function Game() {
   const {language} =useLanguage()
   const {popupOpen, setPopupOpen, detailId, setDetailId} = usePopup()
