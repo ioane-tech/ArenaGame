@@ -216,7 +216,7 @@ const opponentHandler = (opponentCard: Champion) => {
       <div className='grid grid-rows-6 grid-cols-2 gap-4 mt-5 ml-10 h-1/2 cursor-pointer'>
           <div 
             onClick={() => handleSetCard(positions?.position1,"position1")}
-            className={`min-w-32 h-58 ${positions?.position1 ? '' : 'border-amber-500 border-2'} rounded row-span-2 col-start-2`}
+            className={`min-w-32  ${positions?.position1 ? '' : 'border-amber-500 border-2'} rounded row-span-2 col-start-2`}
           >
             {
               positions?.position1?
@@ -228,7 +228,7 @@ const opponentHandler = (opponentCard: Champion) => {
 
           <div 
             onClick={() => handleSetCard(positions?.position2,"position2")}
-            className={`min-w-32 h-58 ${positions?.position2 ? '' : 'border-amber-500 border-2'} rounded row-span-2 col-start-2`}
+            className={`min-w-32  ${positions?.position2 ? '' : 'border-amber-500 border-2'} rounded row-span-2 col-start-2`}
           >
             {
               positions?.position2?
@@ -240,7 +240,7 @@ const opponentHandler = (opponentCard: Champion) => {
 
           <div 
             onClick={() => handleSetCard(positions?.position3,"position3")}
-            className={`min-w-32 h-58 ${positions?.position3 ? '' : 'border-amber-500 border-2'} rounded row-span-2 col-start-2`}
+            className={`min-w-32  ${positions?.position3 ? '' : 'border-amber-500 border-2'} rounded row-span-2 col-start-2`}
           >
             {
               positions?.position3?
@@ -252,7 +252,7 @@ const opponentHandler = (opponentCard: Champion) => {
 
           <div
             onClick={() => handleSetCard(positions?.position4,"position4")} 
-            className={`min-w-32 h-58 ${positions?.position4 ? '' : 'border-amber-500 border-2'} rounded row-span-2 col-start-1 row-start-2`}
+            className={`min-w-32  ${positions?.position4 ? '' : 'border-amber-500 border-2'} rounded row-span-2 col-start-1 row-start-2`}
           >
             {
               positions?.position4?
@@ -264,7 +264,7 @@ const opponentHandler = (opponentCard: Champion) => {
 
           <div 
             onClick={() => handleSetCard(positions?.position5,"position5")}
-            className={`min-w-32 h-58  ${positions?.position5 ? '' : 'border-amber-500 border-2'} rounded row-span-2 col-start-1 row-start-4`}
+            className={`min-w-32   ${positions?.position5 ? '' : 'border-amber-500 border-2'} rounded row-span-2 col-start-1 row-start-4`}
           >
             {
               positions?.position5?
@@ -282,7 +282,7 @@ const opponentHandler = (opponentCard: Champion) => {
       <div className='grid grid-rows-6 grid-cols-2 gap-4 mt-5 ml-auto mr-10 h-1/2 cursor-pointer'>
         <div 
           onClick={() => handleSetOpponentCard(opponentPositions?.position1, "position1")}
-          className={`min-w-32 h-58 ${opponentPositions?.position1 ? '' : 'border-amber-500 border-2'} rounded row-span-2 col-start-1`}
+          className={`min-w-32  ${opponentPositions?.position1 ? '' : 'border-amber-500 border-2'} rounded row-span-2`}
         >
           {opponentPositions?.position1 ? (
             <CardRenderer card={opponentPositions?.position1} />
@@ -293,7 +293,7 @@ const opponentHandler = (opponentCard: Champion) => {
 
         <div 
           onClick={() => handleSetOpponentCard(opponentPositions?.position2, "position2")}
-          className={`min-w-32 h-58 ${opponentPositions?.position2 ? '' : 'border-amber-500 border-2'} rounded row-span-2 col-start-1 row-start-2`}
+          className={`min-w-32  ${opponentPositions?.position2 ? '' : 'border-amber-500 border-2'} rounded row-span-2 row-start-3`}
         >
           {opponentPositions?.position2 ? (
             <CardRenderer card={opponentPositions?.position2} />
@@ -304,7 +304,7 @@ const opponentHandler = (opponentCard: Champion) => {
 
         <div 
           onClick={() => handleSetOpponentCard(opponentPositions?.position3, "position3")}
-          className={`min-w-32 h-58 ${opponentPositions?.position3 ? '' : 'border-amber-500 border-2'} rounded row-span-2 col-start-1 row-start-4`}
+          className={`min-w-32  ${opponentPositions?.position3 ? '' : 'border-amber-500 border-2'} rounded row-span-2 row-start-5`}
         >
           {opponentPositions?.position3 ? (
             <CardRenderer card={opponentPositions?.position3} />
@@ -315,7 +315,7 @@ const opponentHandler = (opponentCard: Champion) => {
 
         <div
           onClick={() => handleSetOpponentCard(opponentPositions?.position4, "position4")} 
-          className={`min-w-32 h-58 ${opponentPositions?.position4 ? '' : 'border-amber-500 border-2'} rounded row-span-2 col-start-2 row-start-2`}
+          className={`min-w-32  ${opponentPositions?.position4 ? '' : 'border-amber-500 border-2'} rounded row-span-2 row-start-2`}
         >
           {opponentPositions?.position4 ? (
             <CardRenderer card={opponentPositions?.position4} />
@@ -326,7 +326,7 @@ const opponentHandler = (opponentCard: Champion) => {
 
         <div 
           onClick={() => handleSetOpponentCard(opponentPositions?.position5, "position5")}
-          className={`min-w-32 h-58 ${opponentPositions?.position5 ? '' : 'border-amber-500 border-2'} rounded row-span-2 col-start-2 row-start-4`}
+          className={`min-w-32  ${opponentPositions?.position5 ? '' : 'border-amber-500 border-2'} rounded row-span-2 row-start-4`}
         >
           {opponentPositions?.position5 ? (
             <CardRenderer card={opponentPositions?.position5} />
