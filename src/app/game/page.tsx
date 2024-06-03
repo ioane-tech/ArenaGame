@@ -15,12 +15,23 @@ interface Description {
   eng: string;
 }
 
+interface activeChampoins {
+  id: number;
+  img: string;
+  name: string;
+  hp: number;
+  damage: number;
+  abilityAvailable: boolean;
+  description: Description;
+  hasKilled: boolean;
+}
+
 interface PositionsState {
-  position1: Champion;
-  position2: Champion;
-  position3: Champion;
-  position4: Champion;
-  position5: Champion;
+  position1: activeChampoins;
+  position2: activeChampoins;
+  position3: activeChampoins;
+  position4: activeChampoins;
+  position5: activeChampoins;
 }
 
 ///////////////////////////////////////////////chemi damatebuli
@@ -30,18 +41,20 @@ function Game() {
   const {popupOpen, setPopupOpen, detailId, setDetailId} = usePopup()
 
 
-  const [yourSelectedCard, setYourSelectedCard] = useState<Champion | null>(null)
+  const [yourSelectedCard, setYourSelectedCard] = useState<activeChampoins | null>(null)
 
-  const [yourCards,setYourCards] = useState<Champion[]>([])
+
+  
+  const [yourCards,setYourCards] = useState<activeChampoins[]>([])
   const [positions, setPositions] = useState<PositionsState>()
 
-  const [opponentCards,setOpponentCards] = useState<Champion[]>([])
+  const [opponentCards,setOpponentCards] = useState<activeChampoins[]>([])
   const [opponentPositions,setOpponentPositions] =useState<PositionsState>()
   
 
-  //your cards
+  //fetch 5 different random cards from champData
   useEffect(() => {
-    const newChampions: Champion[] = [];
+    const newChampions: activeChampoins[] = [];
     const indexes: Set<number> = new Set(); // Using a Set to ensure uniqueness
 
     while (indexes.size < 5) {
@@ -49,15 +62,16 @@ function Game() {
     }
 
     indexes.forEach(index => {
-      newChampions.push(champData[index]); // Fetch cards using the generated indexes
+      newChampions.push({...champData[index], hasKilled: false}); // Fetch cards using the generated indexes
     });
 
     setYourCards(newChampions);
 
   }, []);
+
   //opponent cards
   useEffect(() => {
-    const newChampions: Champion[] = [];
+    const newChampions: activeChampoins[] = [];
     const indexes: Set<number> = new Set(); // Using a Set to ensure uniqueness
 
     while (indexes.size < 5) {
@@ -65,7 +79,7 @@ function Game() {
     }
 
     indexes.forEach(index => {
-      newChampions.push(champData[index]); // Fetch cards using the generated indexes
+      newChampions.push({...champData[index], hasKilled: false}); // Fetch cards using the generated indexes
     });
 
     setOpponentCards(newChampions);
@@ -73,12 +87,13 @@ function Game() {
   }, []);
 
 
+  // opening detail popup
   const handleDetail = (id: any) => {
     setPopupOpen(true);
     setDetailId(id);
   };
   
-  
+
   // your cards card selection and set positions
   const handleSetCard =(position: any, positionName: keyof PositionsState)=>{
     if(yourSelectedCard && yourCards.length > 0){
@@ -128,11 +143,12 @@ function Game() {
     }
   }
 
-  //filter your cards after positioning
+  //filter cards and reset selectedCardmain
   useEffect(() => {
     setYourCards(prevYourCards => prevYourCards.filter(card => card.id !== yourSelectedCard?.id));
     setYourSelectedCard(null)
   }, [positions]);
+
   //filter opponent cards after positioning
   useEffect(() => {
     setOpponentCards(prevYourCards => prevYourCards.filter(card => card.id !== yourSelectedCard?.id));
@@ -140,35 +156,80 @@ function Game() {
   }, [opponentPositions]);
 
 
-// hit opponent cards
-const opponentHandler = (opponentCard: Champion) => {
-  if (yourSelectedCard && yourCards.length === 0) {
-    // Create a new array with updated opponent cards
-    const updatedOpponentCards = opponentCards.map(card => {
-      if (card.id === opponentCard.id) {
-        // Update the HP of the attacked card
-        return {
-          ...card,
-          hp: card.hp - yourSelectedCard.damage
-        };
+
+
+  // hit opponent cards
+  const opponentHandler = (opponentCard: Champion) => {
+    if (yourSelectedCard && yourCards.length === 0) {
+      // Create a new array with updated opponent cards
+      const updatedOpponentCards = opponentCards.map(card => {
+        if (card.id === opponentCard.id) {
+          // Update the HP of the attacked card
+          return {
+            ...card,
+            hp: card.hp - yourSelectedCard.damage
+          };
+        }
+        // Return the original card if it's not the attacked card
+        return card;
+      });
+      
+      // checking if any opponent card got "killed"
+      const filteredOpponentCard = updatedOpponentCards.filter(card => card.hp > 0);
+
+      // setting hasKilled as true for selected card
+      if(filteredOpponentCard.length < opponentCards.length){
+        setPositions(prevPositions => {
+          if (!prevPositions) return prevPositions;
+          
+          // Find the position that matches the selectedCard.id
+          const updatedPositions = { ...prevPositions };
+          for (const key in updatedPositions) {
+            if (updatedPositions[key as keyof PositionsState].id === yourSelectedCard.id) {
+              updatedPositions[key as keyof PositionsState] = {
+                ...updatedPositions[key as keyof PositionsState],
+                hasKilled: true
+              };
+            }
+          }
+          return updatedPositions;
+        });
+
       }
-       // Return the original card if it's not the attacked card
-      return card;
-    });
-    // Update opponentCards state with the modified array
-    const filteredOpponentCard = updatedOpponentCards.filter(card => card.hp > 0);
-    // if(filteredOpponentCard.length < opponentCards.length){
-    //  ნიშნავს რო ვიღაც მოკვდა და hasKilled უნდა გახდეს true
-    // useEffect()
 
-    //abilitis funqciashi argumentis gadacema
-    // }
+      //abilitis funqciashi argumentis gadacema
 
-    setOpponentCards(filteredOpponentCard);
-  }
+      setOpponentCards(filteredOpponentCard);
+    }
 
-  setYourSelectedCard(null)
-};
+    setYourSelectedCard(null)
+    
+  };
+  
+  // refresh abilities on kill
+  useEffect(()=>{
+    // if(yourCards.length === 0){
+      setPositions(prevPositions => {
+        if (!prevPositions) return prevPositions;
+        const updatedPositions = { ...prevPositions };
+          for (const key in updatedPositions) {
+            if (updatedPositions[key as keyof PositionsState].hasKilled) {
+              updatedPositions[key as keyof PositionsState] = {
+                ...updatedPositions[key as keyof PositionsState],
+                  abilityAvailable: true,
+                  hasKilled: false
+              };
+            }
+          }
+        return updatedPositions;
+      })
+  //  }
+
+  },[positions?.position1?.hasKilled,
+    positions?.position2?.hasKilled,
+    positions?.position3?.hasKilled,
+    positions?.position4?.hasKilled,
+    positions?.position5?.hasKilled,])
 
   return (
     <div className='flex flex-row items-center'>
@@ -180,7 +241,7 @@ const opponentHandler = (opponentCard: Champion) => {
         {language === "geo"? "უკან" : "Back"}
       </Link>
 
-      {/**your cards */}
+      {/* your cards */}
       <div className="flex flex-col overflow-auto my-8 ml-5 mt-20 h-screen-80">
         {yourCards &&
           yourCards.map((value, key) => (
