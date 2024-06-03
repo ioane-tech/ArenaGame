@@ -92,7 +92,7 @@ const champData: Champion[] = [
         hp: 1700,
         damage: 200,
         abilityAvailable: true,
-                description:{
+        description:{
             geo:"ძალის გამოყენება შეუძლია ან საკუთარ კარტებზე ან მოწინააღმდეგეზე. თუ საკუთარ კარტს დაადებს ღრუბელს ეს კარტი იმატებს 150 სიცოცხლეს 2 რაუნდის განმავლობაში, ეფექტი მოქმედებს მაშინვე ითვლება მიმდინარე რაუნდიც. თუ Cacula ღრუბელს დაადებს მოწინააღმდეგეს მაშინ მოწინააღმდეგეს აკლდება 200 სიცოცხლე 2 რაუნდის განმავლობაში, ეფექტი მოქმედებს მაშინვე, ითვლება მიმდინარე რაუნდიც.",
             eng:'He can use the force either on his own cards or on the opponent. If you put your own card on the cloud, this card will heal by 150 Hp for 2 rounds, the effect takes effect immediately and the current round counts. If Cacula clouds an opponent then the opponent loses 200 Hp for 2 rounds, the effect takes effect immediately, the current round counts as well.',
         }
