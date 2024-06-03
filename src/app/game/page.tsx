@@ -34,12 +34,15 @@ interface PositionsState {
   position5: activeChampoins;
 }
 
+///////////////////////////////////////////////chemi damatebuli
+
 function Game() {
   const {language} =useLanguage()
   const {popupOpen, setPopupOpen, detailId, setDetailId} = usePopup()
 
 
-  const [selectedCard, setSelectedCard] = useState<activeChampoins | null>(null)
+  const [yourSelectedCard, setYourSelectedCard] = useState<activeChampoins | null>(null)
+
 
   
   const [yourCards,setYourCards] = useState<activeChampoins[]>([])
@@ -68,7 +71,7 @@ function Game() {
 
   //opponent cards
   useEffect(() => {
-    const newChampions: Champion[] = [];
+    const newChampions: activeChampoins[] = [];
     const indexes: Set<number> = new Set(); // Using a Set to ensure uniqueness
 
     while (indexes.size < 5) {
@@ -76,7 +79,7 @@ function Game() {
     }
 
     indexes.forEach(index => {
-      newChampions.push(champData[index]); // Fetch cards using the generated indexes
+      newChampions.push({...champData[index], hasKilled: false}); // Fetch cards using the generated indexes
     });
 
     setOpponentCards(newChampions);
@@ -93,11 +96,11 @@ function Game() {
 
   // your cards card selection and set positions
   const handleSetCard =(position: any, positionName: keyof PositionsState)=>{
-    if(selectedCard && yourCards.length > 0){
+    if(yourSelectedCard && yourCards.length > 0){
       if(!position){
         setPositions((prevPositions: PositionsState | null | undefined) => ({
           ...(prevPositions || {}), // Ensure prevPositions is not null or undefined
-          [positionName]: selectedCard,
+          [positionName]: yourSelectedCard,
         }) as PositionsState);
       }else{
         setPositions((prevPositions: PositionsState | null | undefined) => {
@@ -106,22 +109,22 @@ function Game() {
           }
           return {
             ...(prevPositions || {}),
-            [positionName]: selectedCard,
+            [positionName]: yourSelectedCard,
           } as PositionsState;
         });
       }
     }
     else if(yourCards.length === 0){
-      setSelectedCard(position) 
+      setYourSelectedCard(position) 
     }
   }
   //opponent card selectiron and set position
   const handleSetOpponentCard =(position: any, positionName: keyof PositionsState)=>{
-    if(selectedCard && opponentCards.length > 0){
+    if(yourSelectedCard && opponentCards.length > 0){
       if(!position){
         setOpponentPositions((prevPositions: PositionsState | null | undefined) => ({
           ...(prevPositions || {}), // Ensure prevPositions is not null or undefined
-          [positionName]: selectedCard,
+          [positionName]: yourSelectedCard,
         }) as PositionsState);
       }else{
         setOpponentPositions((prevPositions: PositionsState | null | undefined) => {
@@ -130,40 +133,41 @@ function Game() {
           }
           return {
             ...(prevPositions || {}),
-            [positionName]: selectedCard,
+            [positionName]: yourSelectedCard,
           } as PositionsState;
         });
       }
     }
     else if(opponentCards.length === 0){
-      setSelectedCard(position) 
+      setYourSelectedCard(position) 
     }
   }
 
   //filter cards and reset selectedCardmain
   useEffect(() => {
-    setYourCards(prevYourCards => prevYourCards.filter(card => card.id !== selectedCard?.id));
-    setSelectedCard(null)
+    setYourCards(prevYourCards => prevYourCards.filter(card => card.id !== yourSelectedCard?.id));
+    setYourSelectedCard(null)
   }, [positions]);
 
   //filter opponent cards after positioning
   useEffect(() => {
-    setOpponentCards(prevYourCards => prevYourCards.filter(card => card.id !== selectedCard?.id));
-    setSelectedCard(null)
+    setOpponentCards(prevYourCards => prevYourCards.filter(card => card.id !== yourSelectedCard?.id));
+    setYourSelectedCard(null)
   }, [opponentPositions]);
+
 
 
 
   // hit opponent cards
   const opponentHandler = (opponentCard: Champion) => {
-    if (selectedCard && yourCards.length === 0) {
+    if (yourSelectedCard && yourCards.length === 0) {
       // Create a new array with updated opponent cards
       const updatedOpponentCards = opponentCards.map(card => {
         if (card.id === opponentCard.id) {
           // Update the HP of the attacked card
           return {
             ...card,
-            hp: card.hp - selectedCard.damage
+            hp: card.hp - yourSelectedCard.damage
           };
         }
         // Return the original card if it's not the attacked card
@@ -181,7 +185,7 @@ function Game() {
           // Find the position that matches the selectedCard.id
           const updatedPositions = { ...prevPositions };
           for (const key in updatedPositions) {
-            if (updatedPositions[key as keyof PositionsState].id === selectedCard.id) {
+            if (updatedPositions[key as keyof PositionsState].id === yourSelectedCard.id) {
               updatedPositions[key as keyof PositionsState] = {
                 ...updatedPositions[key as keyof PositionsState],
                 hasKilled: true
@@ -190,6 +194,7 @@ function Game() {
           }
           return updatedPositions;
         });
+
       }
 
       //abilitis funqciashi argumentis gadacema
@@ -197,7 +202,7 @@ function Game() {
       setOpponentCards(filteredOpponentCard);
     }
 
-    setSelectedCard(null)
+    setYourSelectedCard(null)
     
   };
   
@@ -218,7 +223,8 @@ function Game() {
           }
         return updatedPositions;
       })
-    // }
+  //  }
+
   },[positions?.position1?.hasKilled,
     positions?.position2?.hasKilled,
     positions?.position3?.hasKilled,
@@ -240,7 +246,7 @@ function Game() {
         {yourCards &&
           yourCards.map((value, key) => (
             <div
-              onClick={()=>setSelectedCard(value)}
+              onClick={()=>setYourSelectedCard(value)}
               className="card_container cursor-pointer"
               key={key}
             >
@@ -397,7 +403,7 @@ function Game() {
             opponentCards.map((value, key) => (
               <div
               // opponentHandler(value)
-                onClick={()=>setSelectedCard(value)}
+                onClick={()=>setYourSelectedCard(value)}
                 className="card_container cursor-pointer"
                 key={key}
               >
@@ -447,9 +453,9 @@ function Game() {
       }
 
       {
-        (selectedCard && yourCards.length === 0) &&
+        (yourSelectedCard && yourCards.length === 0) &&
         <div className='flex flex-col gap-5 items-center absolute left-1/3'>
-          <p className='text-amber-500 text-3xl'>{selectedCard.name}</p>
+          <p className='text-amber-500 text-3xl'>{yourSelectedCard.name}</p>
           <button className='text-2xl text-amber-500 w-48 h-10 rounded border border-amber-500 mt-10'>abbility</button>
         </div>
       }
