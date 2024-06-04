@@ -42,6 +42,7 @@ function Game() {
 
 
   const [yourSelectedCard, setYourSelectedCard] = useState<activeChampoins | null>(null)
+  const [opponentSelectedCard, setOpponentSelectedCard] = useState<activeChampoins | null>(null)
 
 
   
@@ -118,13 +119,14 @@ function Game() {
       setYourSelectedCard(position) 
     }
   }
+  
   //opponent card selectiron and set position
   const handleSetOpponentCard =(position: any, positionName: keyof PositionsState)=>{
-    if(yourSelectedCard && opponentCards.length > 0){
+    if(opponentSelectedCard && opponentCards.length > 0){
       if(!position){
         setOpponentPositions((prevPositions: PositionsState | null | undefined) => ({
           ...(prevPositions || {}), // Ensure prevPositions is not null or undefined
-          [positionName]: yourSelectedCard,
+          [positionName]: opponentSelectedCard,
         }) as PositionsState);
       }else{
         setOpponentPositions((prevPositions: PositionsState | null | undefined) => {
@@ -133,13 +135,13 @@ function Game() {
           }
           return {
             ...(prevPositions || {}),
-            [positionName]: yourSelectedCard,
+            [positionName]: opponentSelectedCard,
           } as PositionsState;
         });
       }
     }
     else if(opponentCards.length === 0){
-      setYourSelectedCard(position) 
+      setOpponentSelectedCard(position) 
     }
   }
 
@@ -151,8 +153,8 @@ function Game() {
 
   //filter opponent cards after positioning
   useEffect(() => {
-    setOpponentCards(prevYourCards => prevYourCards.filter(card => card.id !== yourSelectedCard?.id));
-    setYourSelectedCard(null)
+    setOpponentCards(prevYourCards => prevYourCards.filter(card => card.id !== opponentSelectedCard?.id));
+    setOpponentSelectedCard(null)
   }, [opponentPositions]);
 
 
@@ -403,7 +405,7 @@ function Game() {
             opponentCards.map((value, key) => (
               <div
               // opponentHandler(value)
-                onClick={()=>setYourSelectedCard(value)}
+                onClick={()=>setOpponentSelectedCard(value)}
                 className="card_container cursor-pointer"
                 key={key}
               >
@@ -436,7 +438,7 @@ function Game() {
 
 
       {/** war swords image */}
-      {
+      {/* {
         opponentCards.length === 0 &&
         <div className='fixed left-0 top-0 bg-fadeBlack w-full h-full '>
           <div className='flex flex-col items-center w-1/2 mr-auto ml-auto mt-20'>
@@ -450,7 +452,7 @@ function Game() {
             </button>
           </div>
         </div>
-      }
+      } */}
 
       {
         (yourSelectedCard && yourCards.length === 0) &&
