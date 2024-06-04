@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-
+/*global styles*/
 
 body{
     font-family: sans-serif;
@@ -10,6 +10,31 @@ body{
 }
 
 @layer utilities {
+    /*************global styles*/
+    .back_button{
+        @apply absolute top-3 left-5 p-2 text-xs text-amber-500 border border-amber-500  cursor-pointer duration-300;
+    }
+    .back_button:hover{
+        @apply border-amber-700 bg-amber-500 text-white duration-300;
+    }
+    
+
+    .common_button{
+        @apply text-lg tracking-wide text-white border-2 border-amber-700 w-52 h-9 rounded bg-amber-500 duration-300;
+    }
+    .common_button:hover{
+        @apply text-lg tracking-wide text-amber-400 border-2 border-amber-600 w-52 h-9 rounded bg-commonGray duration-300;
+    }
+
+
+    .language_button{
+        @apply absolute top-5 left-5 p-2 text-xs text-amber-500 border border-amber-500 cursor-pointer  duration-300;
+    }
+    .language_button:hover{
+        @apply border-amber-700 bg-amber-500 text-white duration-300;
+    }
+
+    /**************scrollbar styles*/
     ::-webkit-scrollbar-track {
         @apply bg-transparent
     }
@@ -27,11 +52,6 @@ body{
     /* Set scrollbar width */
     ::-webkit-scrollbar {
         @apply w-1;
-    }
-
-
-    .back_button{
-        @apply cursor-pointer absolute top-3 left-5 p-2 text-xs text-amber-500 border border-amber-500;
     }
 
 
@@ -126,3 +146,11 @@ body{
         font-size: 12px;
     }
 }
+
+
+
+
+
+
+
+/***********common button animations*/
