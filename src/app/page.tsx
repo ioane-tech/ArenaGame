@@ -20,7 +20,7 @@ export default function Home() {
       </div>
 
 
-      <img className="mt-20 mb-10 ml-auto mr-auto w-1/3" src="/assets/arenaTextImg2.png" alt="" />
+      <img className="mt-20 mb-10 ml-auto mr-auto w-1/3" src="/assets/arenaTextImg.png" alt="" />
 
 
       <div className="flex flex-col gap-5 ml-auto mr-auto w-52">
