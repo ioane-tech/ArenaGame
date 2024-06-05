@@ -249,7 +249,7 @@ function Game() {
           yourCards.map((value, key) => (
             <div
               onClick={()=>setYourSelectedCard(value)}
-              className="card_container cursor-pointer"
+              className="card_container_starter cursor-pointer"
               key={key}
             >
               <img className="card_img" src={value.img} alt="" />
@@ -406,7 +406,7 @@ function Game() {
               <div
               // opponentHandler(value)
                 onClick={()=>setOpponentSelectedCard(value)}
-                className="card_container cursor-pointer"
+                className="card_container_starter cursor-pointer"
                 key={key}
               >
                 <img className="card_img" src={value.img} alt="" />
