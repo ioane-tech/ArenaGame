@@ -41,9 +41,11 @@ function Game() {
   const {language} =useLanguage()
   const {popupOpen, setPopupOpen, detailId, setDetailId} = usePopup()
 
+  const [turn,SetTurn] = useState("Left Player")
 
-  const [yourSelectedCard, setYourSelectedCard] = useState<activeChampoins | null>(null)
-  const [opponentSelectedCard, setOpponentSelectedCard] = useState<activeChampoins | null>(null)
+
+  const [selectedCard, setSelectedCard] = useState<activeChampoins | null>(null)
+  
 
 
   
@@ -54,7 +56,7 @@ function Game() {
   const [opponentPositions,setOpponentPositions] =useState<PositionsState>()
   
 
-  //fetch 5 different random cards from champData
+  //fetch 5 different random cards from champData for left player
   useEffect(() => {
     const newChampions: activeChampoins[] = [];
     const indexes: Set<number> = new Set(); // Using a Set to ensure uniqueness
@@ -71,7 +73,7 @@ function Game() {
 
   }, []);
 
-  //opponent cards
+  //fetch 5 different random cards from champData for Right player
   useEffect(() => {
     const newChampions: activeChampoins[] = [];
     const indexes: Set<number> = new Set(); // Using a Set to ensure uniqueness
@@ -96,66 +98,72 @@ function Game() {
   };
   
 
-  // your cards card selection and set positions
-  const handleSetCard =(position: any, positionName: keyof PositionsState)=>{
-    if(yourSelectedCard && yourCards.length > 0){
-      if(!position){
-        setPositions((prevPositions: PositionsState | null | undefined) => ({
-          ...(prevPositions || {}), // Ensure prevPositions is not null or undefined
-          [positionName]: yourSelectedCard,
-        }) as PositionsState);
-      }else{
-        setPositions((prevPositions: PositionsState | null | undefined) => {
-          if(prevPositions){
-            setYourCards([...yourCards, prevPositions[positionName]]);
-          }
-          return {
-            ...(prevPositions || {}),
-            [positionName]: yourSelectedCard,
-          } as PositionsState;
-        });
+  //card selection and set positions for both team
+  const handleSetPosition =(position: any, positionName: keyof PositionsState)=>{
+    if( turn === "Left Player"){
+      if(selectedCard && yourCards.length > 0){
+        if(!position){
+          setPositions((prevPositions: PositionsState | null | undefined) => ({
+            ...(prevPositions || {}), // Ensure prevPositions is not null or undefined
+            [positionName]: selectedCard,
+          }) as PositionsState);
+          SetTurn('Right Player')
+        }else{
+          // setPositions((prevPositions: PositionsState | null | undefined) => {
+          //   if(prevPositions){
+          //     setYourCards([...yourCards, prevPositions[positionName]]);
+          //   }
+          //   return {
+          //     ...(prevPositions || {}),
+          //     [positionName]: selectedCard,
+          //   } as PositionsState;
+          // });
+          
+        }
+      }
+      else if(yourCards.length === 0 && turn === "Left Player"){
+        setSelectedCard(position) 
       }
     }
-    else if(yourCards.length === 0){
-      setYourSelectedCard(position) 
+
+
+    if( turn === "Right Player"){
+      if(selectedCard && opponentCards.length > 0 ){
+        if(!position){
+          setOpponentPositions((prevPositions: PositionsState | null | undefined) => ({
+            ...(prevPositions || {}), // Ensure prevPositions is not null or undefined
+            [positionName]: selectedCard,
+          }) as PositionsState);
+          SetTurn('Left Player')
+        }else{
+          // setOpponentPositions((prevPositions: PositionsState | null | undefined) => {
+          //   if(prevPositions){
+          //     setOpponentCards([...opponentCards, prevPositions[positionName]]);
+          //   }
+          //   return {
+          //     ...(prevPositions || {}),
+          //     [positionName]: selectedCard,
+          //   } as PositionsState;
+          // });
+        }
+      }
+      else if(opponentCards.length === 0  && turn === "Right Player"){
+        setSelectedCard(position) 
+      }
     }
   }
   
-  //opponent card selectiron and set position
-  const handleSetOpponentCard =(position: any, positionName: keyof PositionsState)=>{
-    if(opponentSelectedCard && opponentCards.length > 0){
-      if(!position){
-        setOpponentPositions((prevPositions: PositionsState | null | undefined) => ({
-          ...(prevPositions || {}), // Ensure prevPositions is not null or undefined
-          [positionName]: opponentSelectedCard,
-        }) as PositionsState);
-      }else{
-        setOpponentPositions((prevPositions: PositionsState | null | undefined) => {
-          if(prevPositions){
-            setOpponentCards([...opponentCards, prevPositions[positionName]]);
-          }
-          return {
-            ...(prevPositions || {}),
-            [positionName]: opponentSelectedCard,
-          } as PositionsState;
-        });
-      }
-    }
-    else if(opponentCards.length === 0){
-      setOpponentSelectedCard(position) 
-    }
-  }
 
-  //filter cards and reset selectedCardmain
+  //filter your cards and reset selectedCardmain
   useEffect(() => {
-    setYourCards(prevYourCards => prevYourCards.filter(card => card.id !== yourSelectedCard?.id));
-    setYourSelectedCard(null)
+    setYourCards(prevYourCards => prevYourCards.filter(card => card.id !== selectedCard?.id));
+    setSelectedCard(null)
   }, [positions]);
 
   //filter opponent cards after positioning
   useEffect(() => {
-    setOpponentCards(prevYourCards => prevYourCards.filter(card => card.id !== opponentSelectedCard?.id));
-    setOpponentSelectedCard(null)
+    setOpponentCards(prevYourCards => prevYourCards.filter(card => card.id !== selectedCard?.id));
+    setSelectedCard(null)
   }, [opponentPositions]);
 
 
@@ -163,14 +171,14 @@ function Game() {
 
   // hit opponent cards
   const opponentHandler = (opponentCard: Champion) => {
-    if (yourSelectedCard && yourCards.length === 0) {
+    if (selectedCard && yourCards.length === 0) {
       // Create a new array with updated opponent cards
       const updatedOpponentCards = opponentCards.map(card => {
         if (card.id === opponentCard.id) {
           // Update the HP of the attacked card
           return {
             ...card,
-            hp: card.hp - yourSelectedCard.damage
+            hp: card.hp - selectedCard.damage
           };
         }
         // Return the original card if it's not the attacked card
@@ -188,7 +196,7 @@ function Game() {
           // Find the position that matches the selectedCard.id
           const updatedPositions = { ...prevPositions };
           for (const key in updatedPositions) {
-            if (updatedPositions[key as keyof PositionsState].id === yourSelectedCard.id) {
+            if (updatedPositions[key as keyof PositionsState].id === selectedCard.id) {
               updatedPositions[key as keyof PositionsState] = {
                 ...updatedPositions[key as keyof PositionsState],
                 hasKilled: true
@@ -205,7 +213,7 @@ function Game() {
       setOpponentCards(filteredOpponentCard);
     }
 
-    setYourSelectedCard(null)
+    setSelectedCard(null)
     
   };
   
@@ -249,8 +257,8 @@ function Game() {
         {yourCards &&
           yourCards.map((value, key) => (
             <div
-              onClick={()=>setYourSelectedCard(value)}
-              className="card_container cursor-pointer"
+              onClick={()=>turn === "Left Player"? setSelectedCard(value) : setSelectedCard(null)}
+              className="card_container_starter cursor-pointer"
               key={key}
             >
               <img className="card_img" src={value.img} alt="" />
@@ -273,13 +281,11 @@ function Game() {
           ))  
         }
       </div>
-      
       {popupOpen && <DetailPopup/>}
-
       {/*********Your card positions */}
-      <div className='grid grid-rows-6 grid-cols-2 gap-4 mt-5 ml-10 h-1/2 cursor-pointer'>
+      <div className='grid grid-rows-6 grid-cols-2 gap-4 mt-5 ml-10 mr-auto h-1/2 cursor-pointer'>
           <div 
-            onClick={() => handleSetCard(positions?.position1,"position1")}
+            onClick={() =>turn === 'Left Player' && handleSetPosition(positions?.position1,"position1")}
             className={`min-w-32  ${positions?.position1 ? '' : 'border-amber-500 border-2'} rounded row-span-2 col-start-2`}
           >
             {
@@ -291,7 +297,7 @@ function Game() {
           </div>
 
           <div 
-            onClick={() => handleSetCard(positions?.position2,"position2")}
+            onClick={() =>turn === 'Left Player' && handleSetPosition(positions?.position2,"position2")}
             className={`min-w-32  ${positions?.position2 ? '' : 'border-amber-500 border-2'} rounded row-span-2 col-start-2`}
           >
             {
@@ -303,7 +309,7 @@ function Game() {
           </div>
 
           <div 
-            onClick={() => handleSetCard(positions?.position3,"position3")}
+            onClick={() =>turn === 'Left Player' && handleSetPosition(positions?.position3,"position3")}
             className={`min-w-32  ${positions?.position3 ? '' : 'border-amber-500 border-2'} rounded row-span-2 col-start-2`}
           >
             {
@@ -315,7 +321,7 @@ function Game() {
           </div>
 
           <div
-            onClick={() => handleSetCard(positions?.position4,"position4")} 
+            onClick={() =>turn === 'Left Player' && handleSetPosition(positions?.position4,"position4")} 
             className={`min-w-32  ${positions?.position4 ? '' : 'border-amber-500 border-2'} rounded row-span-2 col-start-1 row-start-2`}
           >
             {
@@ -327,7 +333,7 @@ function Game() {
           </div>
 
           <div 
-            onClick={() => handleSetCard(positions?.position5,"position5")}
+            onClick={() =>turn === 'Left Player' && handleSetPosition(positions?.position5,"position5")}
             className={`min-w-32   ${positions?.position5 ? '' : 'border-amber-500 border-2'} rounded row-span-2 col-start-1 row-start-4`}
           >
             {
@@ -341,11 +347,26 @@ function Game() {
 
 
 
+      {/* selected Cards and turns */}
+      <div className='flex flex-col mr-auto ml-auto'>
+        <div className='text-4xl text-amber-400 mb-32'>
+          {turn} Turn
+        </div>
+        {
+          (selectedCard && yourCards.length === 0 && opponentCards.length === 0) &&
+          <div className='flex flex-col gap-5 items-center mb-48'>
+            <p className='text-amber-500 text-3xl'>{selectedCard.name}</p>
+            <button className='text-2xl text-amber-500 w-48 h-10 rounded border border-amber-500 mt-10'>abbility</button>
+          </div>
+        }
+      </div>
+
+
 
       {/*********Opponent card positions */}
       <div className='grid grid-rows-6 grid-cols-2 gap-4 mt-5 ml-auto mr-10 h-1/2 cursor-pointer'>
         <div 
-          onClick={() => handleSetOpponentCard(opponentPositions?.position1, "position1")}
+          onClick={() =>turn === "Right Player" && handleSetPosition(opponentPositions?.position1, "position1")}
           className={`min-w-32  ${opponentPositions?.position1 ? '' : 'border-amber-500 border-2'} rounded row-span-2`}
         >
           {opponentPositions?.position1 ? (
@@ -356,7 +377,7 @@ function Game() {
         </div>
 
         <div 
-          onClick={() => handleSetOpponentCard(opponentPositions?.position2, "position2")}
+          onClick={() =>turn === "Right Player" && handleSetPosition(opponentPositions?.position2, "position2")}
           className={`min-w-32  ${opponentPositions?.position2 ? '' : 'border-amber-500 border-2'} rounded row-span-2 row-start-3`}
         >
           {opponentPositions?.position2 ? (
@@ -367,7 +388,7 @@ function Game() {
         </div>
 
         <div 
-          onClick={() => handleSetOpponentCard(opponentPositions?.position3, "position3")}
+          onClick={() =>turn === "Right Player" && handleSetPosition(opponentPositions?.position3, "position3")}
           className={`min-w-32  ${opponentPositions?.position3 ? '' : 'border-amber-500 border-2'} rounded row-span-2 row-start-5`}
         >
           {opponentPositions?.position3 ? (
@@ -378,7 +399,7 @@ function Game() {
         </div>
 
         <div
-          onClick={() => handleSetOpponentCard(opponentPositions?.position4, "position4")} 
+          onClick={() =>turn === "Right Player" && handleSetPosition(opponentPositions?.position4, "position4")} 
           className={`min-w-32  ${opponentPositions?.position4 ? '' : 'border-amber-500 border-2'} rounded row-span-2 row-start-2`}
         >
           {opponentPositions?.position4 ? (
@@ -389,7 +410,7 @@ function Game() {
         </div>
 
         <div 
-          onClick={() => handleSetOpponentCard(opponentPositions?.position5, "position5")}
+          onClick={() =>turn === "Right Player" && handleSetPosition(opponentPositions?.position5, "position5")}
           className={`min-w-32  ${opponentPositions?.position5 ? '' : 'border-amber-500 border-2'} rounded row-span-2 row-start-4`}
         >
           {opponentPositions?.position5 ? (
@@ -399,15 +420,14 @@ function Game() {
           )}
         </div>
       </div>
-
       {/*********opponent cards */}
       <div className='flex flex-col overflow-auto mt-20 mr-5 h-screen-80'>
         {opponentCards &&
             opponentCards.map((value, key) => (
               <div
               // opponentHandler(value)
-                onClick={()=>setOpponentSelectedCard(value)}
-                className="card_container cursor-pointer"
+                onClick={()=>turn === "Right Player"? setSelectedCard(value) : setSelectedCard(null)}
+                className="card_container_starter cursor-pointer"
                 key={key}
               >
                 <img className="card_img" src={value.img} alt="" />
@@ -455,13 +475,7 @@ function Game() {
         </div>
       } */}
 
-      {
-        (yourSelectedCard && yourCards.length === 0) &&
-        <div className='flex flex-col gap-5 items-center absolute left-1/3'>
-          <p className='text-amber-500 text-3xl'>{yourSelectedCard.name}</p>
-          <button className='text-2xl text-amber-500 w-48 h-10 rounded border border-amber-500 mt-10'>abbility</button>
-        </div>
-      }
+
     </div>
   )
 }
