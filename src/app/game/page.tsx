@@ -138,7 +138,7 @@ function Game() {
   
   // dealing damage
   const hitHandler = (targetCard: activeChampoins | undefined) => {
-    if (selectedCard && yourCards.length === 0 && opponentCards.length === 0 ) {
+    if (selectedCard && targetCard && yourCards.length === 0 && opponentCards.length === 0 ) {
       if (turn === "Left Player" && opponentPositions) {
         // Update the opponent positions
         const updatedOpponentPositions = { ...opponentPositions };
