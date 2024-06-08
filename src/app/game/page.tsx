@@ -23,7 +23,7 @@ interface activeChampoins {
   damage: number;
   abilityAvailable: boolean;
   description: Description;
-  hasKilled: boolean;
+  hasKilled: number;
 }
 
 interface PositionsState {
@@ -59,7 +59,7 @@ function Game() {
     }
 
     indexes.forEach(index => {
-      newChampions.push({...champData[index], hasKilled: false}); // Fetch cards using the generated indexes
+      newChampions.push({...champData[index], hasKilled: 0}); // Fetch cards using the generated indexes
     });
 
     setYourCards(newChampions);
@@ -76,7 +76,7 @@ function Game() {
     }
 
     indexes.forEach(index => {
-      newChampions.push({...champData[index], hasKilled: false}); // Fetch cards using the generated indexes
+      newChampions.push({...champData[index], hasKilled: 0}); // Fetch cards using the generated indexes
     });
 
     setOpponentCards(newChampions);
@@ -94,7 +94,6 @@ function Game() {
   //card selection and set positions for both team
   const handleSetPosition =(position: any, positionName: keyof PositionsState)=>{
     if( turn === "Left Player"){
-      console.log("ki 1")
       if(selectedCard && yourCards.length > 0){
         if(!position){
           setPositions((prevPositions: PositionsState | null | undefined) => ({
@@ -108,9 +107,7 @@ function Game() {
         setSelectedCard(position)
       }
     }
-    console.log("ki")
     if( turn === "Right Player"){
-      console.log("ki 2")
       if(selectedCard && opponentCards.length > 0 ){
         if(!position){
           setOpponentPositions((prevPositions: PositionsState | null | undefined) => ({
@@ -126,7 +123,6 @@ function Game() {
     }
   }
   
-  console.log(selectedCard)
   //filter selectedCard from yourCards and reset selectedCard(when setting card positions)
   useEffect(() => {
     setYourCards(prevYourCards => prevYourCards.filter(card => card.id !== selectedCard?.id));
@@ -142,7 +138,6 @@ function Game() {
   
   // dealing damage
   const hitHandler = (targetCard: activeChampoins | undefined) => {
-    console.log("hit")
     if (selectedCard && yourCards.length === 0 && opponentCards.length === 0 ) {
       if (turn === "Left Player" && opponentPositions) {
         // Update the opponent positions
@@ -175,7 +170,7 @@ function Game() {
               if (updatedPositions[key as keyof PositionsState].id === selectedCard.id) {
                 updatedPositions[key as keyof PositionsState] = {
                   ...updatedPositions[key as keyof PositionsState],
-                  hasKilled: true
+                  hasKilled: updatedPositions[key as keyof PositionsState].hasKilled + 1
                 };
               }
             }
@@ -219,7 +214,7 @@ function Game() {
               if (updatedOpponentPositions[key as keyof PositionsState].id === selectedCard.id) {
                 updatedOpponentPositions[key as keyof PositionsState] = {
                   ...updatedOpponentPositions[key as keyof PositionsState],
-                  hasKilled: true
+                  hasKilled: updatedOpponentPositions[key as keyof PositionsState].hasKilled + 1
                 };
               }
             }
@@ -244,8 +239,7 @@ function Game() {
             if (updatedPositions[key as keyof PositionsState].hasKilled) {
               updatedPositions[key as keyof PositionsState] = {
                 ...updatedPositions[key as keyof PositionsState],
-                  abilityAvailable: true,
-                  hasKilled: false
+                  abilityAvailable: true
               };
             }
           }
@@ -267,8 +261,7 @@ function Game() {
             if (updatedOpponentPositions[key as keyof PositionsState].hasKilled) {
               updatedOpponentPositions[key as keyof PositionsState] = {
                 ...updatedOpponentPositions[key as keyof PositionsState],
-                  abilityAvailable: true,
-                  hasKilled: false
+                  abilityAvailable: true
               };
             }
           }
@@ -281,6 +274,8 @@ function Game() {
     opponentPositions?.position4?.hasKilled,
     opponentPositions?.position5?.hasKilled,])
 
+  console.log(positions)
+  console.log(opponentPositions)
   return (
     <div className='flex flex-row items-center'>
 
