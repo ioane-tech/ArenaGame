@@ -274,8 +274,6 @@ function Game() {
     opponentPositions?.position4?.hasKilled,
     opponentPositions?.position5?.hasKilled,])
 
-  console.log(positions)
-  console.log(opponentPositions)
   return (
     <div className='flex flex-row items-center'>
 
