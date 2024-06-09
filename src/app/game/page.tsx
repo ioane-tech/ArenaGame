@@ -24,6 +24,7 @@ interface activeChampoins {
   abilityAvailable: boolean;
   description: Description;
   hasKilled: boolean;
+  abilityType: string;
 }
 
 interface PositionsState {
