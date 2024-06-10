@@ -36,6 +36,27 @@ interface PositionsState {
   position5: activeChampoins;
 }
 
+const defaultChampion: activeChampoins = {
+  id: -1,
+  img: '',
+  name: '',
+  hp: 0,
+  damage: 0,
+  abilityAvailable: false,
+  description: { geo: '', eng: '' },
+  abilityType: '',
+  hasKilled: 0,
+  canUse: false
+};
+
+const initialPositions: PositionsState = {
+  position1: { ...defaultChampion },
+  position2: { ...defaultChampion },
+  position3: { ...defaultChampion },
+  position4: { ...defaultChampion },
+  position5: { ...defaultChampion }
+};
+
 function Game() {
   const {language} =useLanguage()
   const {popupOpen, setPopupOpen, detailId, setDetailId} = usePopup()
@@ -46,10 +67,10 @@ function Game() {
   const [selectedCard, setSelectedCard] = useState<activeChampoins | null>(null)
 
   const [yourCards,setYourCards] = useState<activeChampoins[]>([])
-  const [positions, setPositions] = useState<PositionsState>()
+  const [positions, setPositions] = useState<PositionsState>(initialPositions)
 
   const [opponentCards,setOpponentCards] = useState<activeChampoins[]>([])
-  const [opponentPositions,setOpponentPositions] =useState<PositionsState>()
+  const [opponentPositions,setOpponentPositions] =useState<PositionsState>(initialPositions)
   
 
   //fetch 5 different random cards from champData for left Player
@@ -98,7 +119,7 @@ function Game() {
   const handleSetPosition =(position: any, positionName: keyof PositionsState)=>{
     if( turn === "Left Player"){
       if(selectedCard && yourCards.length > 0){
-        if(!position){
+        if(position.name==""){
           setPositions((prevPositions: PositionsState | null | undefined) => ({
             ...(prevPositions || {}), // Ensure prevPositions is not null or undefined
             [positionName]: selectedCard,
@@ -112,12 +133,13 @@ function Game() {
     }
     if( turn === "Right Player"){
       if(selectedCard && opponentCards.length > 0 ){
-        if(!position){
+        if(position.name==""){
           setOpponentPositions((prevPositions: PositionsState | null | undefined) => ({
             ...(prevPositions || {}), // Ensure prevPositions is not null or undefined
             [positionName]: selectedCard,
           }) as PositionsState);
           setTurn('Left Player')
+          console.log("ki")
         }
       }
       else if(opponentCards.length === 0  && turn === "Right Player" && position.canUse){
@@ -125,7 +147,7 @@ function Game() {
       }
     }
   }
-  
+
   //filter selectedCard from yourCards and reset selectedCard(when setting card positions)
   useEffect(() => {
     setYourCards(prevYourCards => prevYourCards.filter(card => card.id !== selectedCard?.id));
@@ -345,10 +367,71 @@ function Game() {
         });
       }
     }
-    console.log(round)
   }, [positions, opponentPositions]);
 
+  //your grid positioning
+  const positionClasses: { [key in keyof PositionsState]: string } = {
+    position1: 'row-span-2 col-start-2',
+    position2: 'row-span-2 col-start-2',
+    position3: 'row-span-2 col-start-2',
+    position4: 'row-span-2 col-start-1 row-start-2',
+    position5: 'row-span-2 col-start-1 row-start-4'
+  };
 
+  //function to render your positions
+  const renderYourPositions = () => {
+    const positionKeys = positions ? Object.keys(positions) as (keyof PositionsState)[] : [];
+
+    return positionKeys.map(positionKey => (
+      <div
+        key={positionKey}
+        onClick={() => {
+          (turn === 'Left Player')
+            ? handleSetPosition(positions?.[positionKey], positionKey)
+            : hitHandler(positions?.[positionKey])
+        }}
+        className={`min-w-32 ${positions?.[positionKey].name != "" ? '' : 'border-amber-500 border-2'} rounded ${positionClasses[positionKey]}`}
+      >
+        {
+          positions?.[positionKey] && positions?.[positionKey].name!="" ?
+            <CardRenderer card={positions?.[positionKey]} /> :
+            <p className='text-white ml-2'>{positionKey.replace('position', 'position ')}</p>
+        }
+      </div>
+    ));
+  };
+
+  //your grid positioning
+  const opponentPositionClasses: { [key in keyof PositionsState]: string } = {
+    position1: 'row-span-2',
+    position2: 'row-span-2',
+    position3: 'row-span-2',
+    position4: 'row-span-2 col-start-2 row-start-2',
+    position5: 'row-span-2 col-start-2 row-start-4'
+  };
+
+  //function to render opponent positions
+  const renderOpponentPositions = () => {
+    const positionKeys = opponentPositions ? Object.keys(opponentPositions) as (keyof PositionsState)[] : [];
+
+    return positionKeys.map(positionKey => (
+      <div
+        key={positionKey}
+        onClick={() => {
+          (turn === 'Right Player')
+            ? handleSetPosition(opponentPositions?.[positionKey], positionKey)
+            : hitHandler(opponentPositions?.[positionKey])
+        }}
+        className={`min-w-32 ${opponentPositions?.[positionKey].name != "" ? '' : 'border-amber-500 border-2'} rounded ${opponentPositionClasses[positionKey]}`}
+      >
+        {
+          opponentPositions?.[positionKey] && opponentPositions?.[positionKey].name!="" ?
+            <CardRenderer card={opponentPositions?.[positionKey]} /> :
+            <p className='text-white ml-2'>{positionKey.replace('position', 'position ')}</p>
+        }
+      </div>
+    ));
+  };
 
   return (
     <div className='flex flex-row items-center'>
@@ -394,85 +477,7 @@ function Game() {
 
       {/*********Your card positions */}
       <div className='grid grid-rows-6 grid-cols-2 gap-4 mt-5 ml-10 mr-auto h-1/2 cursor-pointer'>
-          <div 
-            onClick={() => {
-              (turn === 'Left Player') 
-                ? handleSetPosition(positions?.position1, "position1") 
-                : hitHandler(positions?.position1)
-            }}
-            className={`min-w-32  ${positions?.position1 ? '' : 'border-amber-500 border-2'} rounded row-span-2 col-start-2`}
-          >
-            {
-              positions?.position1?
-                <CardRenderer card = {positions?.position1}/>
-                :
-                <p className='text-white ml-2'>position 1</p>
-            }
-          </div>
-
-          <div  
-            onClick={() => {
-              (turn === 'Left Player') 
-                ? handleSetPosition(positions?.position2, "position2") 
-                : hitHandler(positions?.position2)
-            }}
-            className={`min-w-32  ${positions?.position2 ? '' : 'border-amber-500 border-2'} rounded row-span-2 col-start-2`}
-          >
-            {
-              positions?.position2?
-                <CardRenderer card = {positions?.position2}/>
-                :
-                <p className='text-white ml-2'>position 2</p>
-            }
-          </div>
-
-          <div  
-            onClick={() => {
-              (turn === 'Left Player') 
-                ? handleSetPosition(positions?.position3, "position3") 
-                : hitHandler(positions?.position3)
-            }}
-            className={`min-w-32  ${positions?.position3 ? '' : 'border-amber-500 border-2'} rounded row-span-2 col-start-2`}
-          >
-            {
-              positions?.position3?
-                <CardRenderer card = {positions?.position3}/>
-                :
-                <p className='text-white ml-2'>position 3</p>
-            }
-          </div>
-
-          <div 
-            onClick={() => {
-              (turn === 'Left Player') 
-                ? handleSetPosition(positions?.position4, "position4") 
-                : hitHandler(positions?.position4)
-            }}
-            className={`min-w-32  ${positions?.position4 ? '' : 'border-amber-500 border-2'} rounded row-span-2 col-start-1 row-start-2`}
-          >
-            {
-              positions?.position4?
-                <CardRenderer card = {positions?.position4}/>
-                :
-                <p className='text-white ml-2'>position 4</p>
-            }
-          </div>
-
-          <div  
-            onClick={() => {
-              (turn === 'Left Player') 
-                ? handleSetPosition(positions?.position5, "position5") 
-                : hitHandler(positions?.position5)
-            }}
-            className={`min-w-32   ${positions?.position5 ? '' : 'border-amber-500 border-2'} rounded row-span-2 col-start-1 row-start-4`}
-          >
-            {
-              positions?.position5?
-                <CardRenderer card = {positions?.position5}/>
-                :
-                <p className='text-white ml-2'>position 5</p>
-            }
-          </div>
+          {renderYourPositions()}
       </div>
 
 
@@ -498,80 +503,7 @@ function Game() {
 
       {/*********Opponent card positions */}
       <div className='grid grid-rows-6 grid-cols-2 gap-4 mt-5 ml-auto mr-10 h-1/2 cursor-pointer'>
-        <div 
-            onClick={() => {
-              (turn === 'Right Player') 
-                ? handleSetPosition(opponentPositions?.position1, "position1") 
-                : hitHandler(opponentPositions?.position1)
-            }}
-          className={`min-w-32  ${opponentPositions?.position1 ? '' : 'border-amber-500 border-2'} rounded row-span-2`}
-        >
-          {opponentPositions?.position1 ? (
-            <CardRenderer card={opponentPositions?.position1} />
-          ) : (
-            <p className='text-white ml-2'>position 1</p>
-          )}
-        </div>
-
-        <div 
-            onClick={() => {
-              (turn === 'Right Player') 
-                ? handleSetPosition(opponentPositions?.position2, "position2") 
-                : hitHandler(opponentPositions?.position2)
-            }}
-          className={`min-w-32  ${opponentPositions?.position2 ? '' : 'border-amber-500 border-2'} rounded row-span-2 row-start-3`}
-        >
-          {opponentPositions?.position2 ? (
-            <CardRenderer card={opponentPositions?.position2} />
-          ) : (
-            <p className='text-white ml-2'>position 2</p>
-          )}
-        </div>
-
-        <div 
-            onClick={() => {
-              (turn === 'Right Player') 
-                ? handleSetPosition(opponentPositions?.position3, "position3") 
-                : hitHandler(opponentPositions?.position3)
-            }}
-          className={`min-w-32  ${opponentPositions?.position3 ? '' : 'border-amber-500 border-2'} rounded row-span-2 row-start-5`}
-        >
-          {opponentPositions?.position3 ? (
-            <CardRenderer card={opponentPositions?.position3} />
-          ) : (
-            <p className='text-white ml-2'>position 3</p>
-          )}
-        </div>
-
-        <div
-            onClick={() => {
-              (turn === 'Right Player') 
-                ? handleSetPosition(opponentPositions?.position4, "position4") 
-                : hitHandler(opponentPositions?.position4)
-            }}
-          className={`min-w-32  ${opponentPositions?.position4 ? '' : 'border-amber-500 border-2'} rounded row-span-2 row-start-2`}
-        >
-          {opponentPositions?.position4 ? (
-            <CardRenderer card={opponentPositions?.position4} />
-          ) : (
-            <p className='text-white ml-2'>position 4</p>
-          )}
-        </div>
-
-        <div 
-            onClick={() => {
-              (turn === 'Right Player') 
-                ? handleSetPosition(opponentPositions?.position5, "position5") 
-                : hitHandler(opponentPositions?.position5)
-            }}
-          className={`min-w-32  ${opponentPositions?.position5 ? '' : 'border-amber-500 border-2'} rounded row-span-2 row-start-4`}
-        >
-          {opponentPositions?.position5 ? (
-            <CardRenderer card={opponentPositions?.position5} />
-          ) : (
-            <p className='text-white ml-2'>position 5</p>
-          )}
-        </div>
+        {renderOpponentPositions()}
       </div>
 
       {/*********opponent cards */}
