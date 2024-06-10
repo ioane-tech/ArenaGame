@@ -23,8 +23,9 @@ interface activeChampoins {
   damage: number;
   abilityAvailable: boolean;
   description: Description;
-  hasKilled: boolean;
   abilityType: string;
+  hasKilled: number;
+  canUse: boolean;
 }
 
 interface PositionsState {
@@ -40,6 +41,7 @@ function Game() {
   const {popupOpen, setPopupOpen, detailId, setDetailId} = usePopup()
 
   const [turn,setTurn] = useState("Left Player")
+  const [round,setRound] = useState(1)
 
   const [selectedCard, setSelectedCard] = useState<activeChampoins | null>(null)
 
@@ -60,7 +62,7 @@ function Game() {
     }
 
     indexes.forEach(index => {
-      newChampions.push({...champData[index], hasKilled: false}); // Fetch cards using the generated indexes
+      newChampions.push({...champData[index], hasKilled: 0, canUse: true}); // Fetch cards using the generated indexes
     });
 
     setYourCards(newChampions);
@@ -77,7 +79,7 @@ function Game() {
     }
 
     indexes.forEach(index => {
-      newChampions.push({...champData[index], hasKilled: false}); // Fetch cards using the generated indexes
+      newChampions.push({...champData[index], hasKilled: 0, canUse: true}); // Fetch cards using the generated indexes
     });
 
     setOpponentCards(newChampions);
@@ -95,7 +97,6 @@ function Game() {
   //card selection and set positions for both team
   const handleSetPosition =(position: any, positionName: keyof PositionsState)=>{
     if( turn === "Left Player"){
-      console.log("ki 1")
       if(selectedCard && yourCards.length > 0){
         if(!position){
           setPositions((prevPositions: PositionsState | null | undefined) => ({
@@ -105,13 +106,11 @@ function Game() {
           setTurn('Right Player')
         }
       }
-      else if(yourCards.length === 0 && turn === "Left Player"){
+      else if(yourCards.length === 0 && turn === "Left Player" && position.canUse){
         setSelectedCard(position)
       }
     }
-    console.log("ki")
     if( turn === "Right Player"){
-      console.log("ki 2")
       if(selectedCard && opponentCards.length > 0 ){
         if(!position){
           setOpponentPositions((prevPositions: PositionsState | null | undefined) => ({
@@ -121,13 +120,12 @@ function Game() {
           setTurn('Left Player')
         }
       }
-      else if(opponentCards.length === 0  && turn === "Right Player"){
+      else if(opponentCards.length === 0  && turn === "Right Player" && position.canUse){
         setSelectedCard(position)
       }
     }
   }
   
-  console.log(selectedCard)
   //filter selectedCard from yourCards and reset selectedCard(when setting card positions)
   useEffect(() => {
     setYourCards(prevYourCards => prevYourCards.filter(card => card.id !== selectedCard?.id));
@@ -143,9 +141,8 @@ function Game() {
   
   // dealing damage
   const hitHandler = (targetCard: activeChampoins | undefined) => {
-    console.log("hit")
-    if (selectedCard && yourCards.length === 0 && opponentCards.length === 0 ) {
-      if (turn === "Left Player" && opponentPositions) {
+    if (selectedCard && targetCard && yourCards.length === 0 && opponentCards.length === 0 ) {
+      if (turn === "Left Player" && opponentPositions && selectedCard.canUse) {
         // Update the opponent positions
         const updatedOpponentPositions = { ...opponentPositions };
         let opponentCardKilled = false;
@@ -164,19 +161,35 @@ function Game() {
             }
           }
         }
+
+        //setting selected card as "used" for this round
+        setPositions(prevPositions => {
+          if (!prevPositions) return prevPositions;
+          // Find the position that matches the selectedCard.id
+          const updatedPositions = { ...prevPositions };
+          for (const key in updatedPositions) {
+            if (updatedPositions[key as keyof PositionsState].id === selectedCard.id) {
+              updatedPositions[key as keyof PositionsState] = {
+                ...updatedPositions[key as keyof PositionsState],
+                canUse: false
+              };
+            }
+          }
+          return updatedPositions;
+        });
   
-        // Setting hasKilled as true for selected card if a card was killed
+        // Setting hasKilled for selected card if a card was killed
         if (opponentCardKilled) {
           setPositions(prevPositions => {
             if (!prevPositions) return prevPositions;
-  
+
             // Find the position that matches the selectedCard.id
             const updatedPositions = { ...prevPositions };
             for (const key in updatedPositions) {
               if (updatedPositions[key as keyof PositionsState].id === selectedCard.id) {
                 updatedPositions[key as keyof PositionsState] = {
                   ...updatedPositions[key as keyof PositionsState],
-                  hasKilled: true
+                  hasKilled: updatedPositions[key as keyof PositionsState].hasKilled + 1
                 };
               }
             }
@@ -189,7 +202,7 @@ function Game() {
         setTurn("Right Player")
       }
 
-      if (turn === "Right Player" && positions) {
+      if (turn === "Right Player" && positions && selectedCard.canUse) {
         // Update the Your positions
         const updatedPositions = { ...positions };
         let yourCardKilled = false;
@@ -208,8 +221,24 @@ function Game() {
             }
           }
         }
+
+        //setting selected card as "used" for this round
+        setOpponentPositions(prevOpponentPositions => {
+          if (!prevOpponentPositions) return prevOpponentPositions;
+          // Find the position that matches the selectedCard.id
+          const updatedOpponentPositions = { ...prevOpponentPositions };
+          for (const key in updatedOpponentPositions) {
+            if (updatedOpponentPositions[key as keyof PositionsState].id === selectedCard.id) {
+              updatedOpponentPositions[key as keyof PositionsState] = {
+                ...updatedOpponentPositions[key as keyof PositionsState],
+                canUse: false
+              };
+            }
+          }
+          return updatedOpponentPositions;
+        });
   
-        // Setting hasKilled as true for selected card if a card was killed
+        // Setting hasKilled for selected card if a card was killed
         if (yourCardKilled) {
           setOpponentPositions(prevOpponentPositions => {
             if (!prevOpponentPositions) return prevOpponentPositions;
@@ -220,7 +249,7 @@ function Game() {
               if (updatedOpponentPositions[key as keyof PositionsState].id === selectedCard.id) {
                 updatedOpponentPositions[key as keyof PositionsState] = {
                   ...updatedOpponentPositions[key as keyof PositionsState],
-                  hasKilled: true
+                  hasKilled: updatedOpponentPositions[key as keyof PositionsState].hasKilled + 1
                 };
               }
             }
@@ -245,8 +274,7 @@ function Game() {
             if (updatedPositions[key as keyof PositionsState].hasKilled) {
               updatedPositions[key as keyof PositionsState] = {
                 ...updatedPositions[key as keyof PositionsState],
-                  abilityAvailable: true,
-                  hasKilled: false
+                  abilityAvailable: true
               };
             }
           }
@@ -268,8 +296,7 @@ function Game() {
             if (updatedOpponentPositions[key as keyof PositionsState].hasKilled) {
               updatedOpponentPositions[key as keyof PositionsState] = {
                 ...updatedOpponentPositions[key as keyof PositionsState],
-                  abilityAvailable: true,
-                  hasKilled: false
+                  abilityAvailable: true
               };
             }
           }
@@ -281,6 +308,47 @@ function Game() {
     opponentPositions?.position3?.hasKilled,
     opponentPositions?.position4?.hasKilled,
     opponentPositions?.position5?.hasKilled,])
+
+  //function to check if all cards are used
+  const allCanUseFalse = (positions: PositionsState) => {
+    return Object.values(positions).every(card => !card.canUse);
+  };
+
+  // making every card usable after all cards are used
+  useEffect(() => {
+    if (positions && opponentPositions) {
+      if (allCanUseFalse(positions) && allCanUseFalse(opponentPositions)) {
+        setRound(prevRound => prevRound + 1);
+
+        setPositions(prevPositions => {
+          if (!prevPositions) return prevPositions;
+          const updatedPositions = { ...prevPositions };
+          for (const key in updatedPositions) {
+            updatedPositions[key as keyof PositionsState] = {
+              ...updatedPositions[key as keyof PositionsState],
+              canUse: true
+            };
+          }
+          return updatedPositions;
+        });
+
+        setOpponentPositions(prevOpponentPositions => {
+          if (!prevOpponentPositions) return prevOpponentPositions;
+          const updatedOpponentPositions = { ...prevOpponentPositions };
+          for (const key in updatedOpponentPositions) {
+            updatedOpponentPositions[key as keyof PositionsState] = {
+              ...updatedOpponentPositions[key as keyof PositionsState],
+              canUse: true
+            };
+          }
+          return updatedOpponentPositions;
+        });
+      }
+    }
+    console.log(round)
+  }, [positions, opponentPositions]);
+
+
 
   return (
     <div className='flex flex-row items-center'>
@@ -411,6 +479,9 @@ function Game() {
 
       {/* selected Cards and turns */}
       <div className='flex flex-col mr-auto ml-auto'>
+        <div className='text-4xl text-amber-400 mb-32'>
+          Round {round}
+        </div>
         <div className='text-4xl text-amber-400 mb-32'>
           {turn} Turn
         </div>
