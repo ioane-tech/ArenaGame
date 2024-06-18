@@ -139,6 +139,21 @@ body{
     box-shadow: -0px -0px 20px rgb(245, 189, 92);
     transition: 0.3s;
 }
+.used_card_container{
+    display:flex;
+    flex-direction:column;
+    align-items: center;
+    
+    --tw-border-opacity: 1;
+    border-color: rgb(245 158 11 / var(--tw-border-opacity));
+    border-width: 2px;
+    border-radius: 0.25rem/* 4px */;
+    background-color: transparent;
+    font-weight: 700;
+    transition: 0.3s;
+
+    opacity: 0.5;
+}
 .card_container:focus{
     scale: 1.06;
     box-shadow: -0px -0px 20px rgb(245, 189, 92);
