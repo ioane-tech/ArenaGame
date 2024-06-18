@@ -15,7 +15,7 @@ interface Description {
   eng: string;
 }
 
-interface activeChampoins {
+export interface activeChampoins {
   id: number;
   img: string;
   name: string;
@@ -400,7 +400,7 @@ function Game() {
                 ? handleSetPosition(positions?.position1, "position1") 
                 : hitHandler(positions?.position1)
             }}
-            className={`min-w-32  ${positions?.position1 ? '' : 'border-amber-500 border-2'} rounded row-span-2 col-start-2`}
+            className={`min-w-32  ${positions?.position1 ? '' : 'border-amber-500 border-2'} rounded row-span-2 col-start-2 `}
           >
             {
               positions?.position1?
@@ -479,10 +479,11 @@ function Game() {
 
       {/* selected Cards and turns */}
       <div className='flex flex-col mr-auto ml-auto'>
-        <div className='text-4xl text-amber-400 mb-32'>
+        <div className='ml-auto mr-auto text-4xl text-amber-400 mb-20'>
           Round {round}
         </div>
-        <div className='text-4xl text-amber-400 mb-32'>
+
+        <div className='text-4xl text-amber-400 mb-20'>
           {turn} Turn
         </div>
         {

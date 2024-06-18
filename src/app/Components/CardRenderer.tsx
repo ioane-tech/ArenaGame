@@ -13,7 +13,7 @@ function CardRenderer(card:any) {
   };
   return (
     <div>
-      <div className="card_container">
+      <div className={card.card.canUse? "card_container " : 'used_card_container'}>
         <img className="card_img" src={card.card.img} alt="" />
     
         <div className='flex flex-row items-center mt-2'>
