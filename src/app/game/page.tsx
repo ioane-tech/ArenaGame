@@ -46,7 +46,7 @@ const defaultChampion: activeChampoins = {
   description: { geo: '', eng: '' },
   abilityType: '',
   hasKilled: 0,
-  canUse: false
+  canUse: true
 };
 
 const initialPositions: PositionsState = {
@@ -221,7 +221,9 @@ function Game() {
   
         // Update opponent positions
         setOpponentPositions(updatedOpponentPositions);
-        setTurn("Right Player")
+        if(!allCanUseFalse(opponentPositions)){
+          setTurn("Right Player")
+        }
       }
 
       if (turn === "Right Player" && positions && selectedCard.canUse) {
@@ -281,7 +283,9 @@ function Game() {
   
         // Update your positions
         setPositions(updatedPositions);
-        setTurn("Left Player")
+        if(!allCanUseFalse(positions)){
+          setTurn("Left Player")
+        }
       }
     }
     setSelectedCard(null)
