@@ -139,7 +139,6 @@ function Game() {
             [positionName]: selectedCard,
           }) as PositionsState);
           setTurn('Left Player')
-          console.log("ki")
         }
       }
       else if(opponentCards.length === 0  && turn === "Right Player" && position.canUse){
@@ -344,6 +343,8 @@ function Game() {
   useEffect(() => {
     if (positions && opponentPositions) {
       if (allCanUseFalse(positions) && allCanUseFalse(opponentPositions)) {
+        setTurn("Left Player")
+
         setRound(prevRound => prevRound + 1);
 
         setPositions(prevPositions => {
@@ -405,7 +406,7 @@ function Game() {
     ));
   };
 
-  //your grid positioning
+  //opponent grid positioning
   const opponentPositionClasses: { [key in keyof PositionsState]: string } = {
     position1: 'row-span-2',
     position2: 'row-span-2',
