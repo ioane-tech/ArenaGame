@@ -43,9 +43,24 @@ const champData: Champion[] = [
             eng:'passive: When he makes demage he heals himself by 100 Hp.',
         },
         abilityType: "passive",
-        ability:function(targer:any,opPositions:any,yourPositions:any){
-            this.hp = this.hp + 100
-            return;
+        ability:function(targer:any,yourPositions:any,opPositions:any,turn:string){
+            if(turn==="Left Player"){
+                const updatedPositions = { ...yourPositions };
+                for (const key in updatedPositions) {
+                    if (updatedPositions[key].id === this.id) {
+                        updatedPositions[key].hp += 100; // Heal Rafael by 100 HP
+                    }
+                }
+                return [updatedPositions,opPositions];
+            }else if(turn==="Right Player"){
+                const updatedOpponentPositions = { ...opPositions };
+                for (const key in updatedOpponentPositions) {
+                    if (updatedOpponentPositions[key].id === this.id) {
+                        updatedOpponentPositions[key].hp += 100; // Heal Rafael by 100 HP
+                    }
+                }
+                return [yourPositions,updatedOpponentPositions];
+            }
         }
     },
     {

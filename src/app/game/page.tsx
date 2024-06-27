@@ -46,6 +46,9 @@ const defaultChampion: activeChampoins = {
   abilityAvailable: false,
   description: { geo: '', eng: '' },
   abilityType: '',
+  ability: function(){
+    return;
+  },
   hasKilled: 0,
   canUse: true
 };
@@ -166,13 +169,16 @@ function Game() {
     if (selectedCard && targetCard && yourCards.length === 0 && opponentCards.length === 0 ) {
       if (turn === "Left Player" && opponentPositions && selectedCard.canUse) {
 
+        //executing passive abilities
         if(selectedCard.abilityType === "passive"){
-          selectedCard.ability("","","")
+          const updatedBothPositions = selectedCard.ability(null,positions,opponentPositions,turn);
+          setPositions(updatedBothPositions[0])
+          setOpponentPositions(updatedBothPositions[1])
         }
+        
         // Update the opponent positions
         const updatedOpponentPositions = { ...opponentPositions };
         let opponentCardKilled = false;
-        
         for (const key in updatedOpponentPositions) {
           if (updatedOpponentPositions[key as keyof PositionsState].id === targetCard?.id) {
             updatedOpponentPositions[key as keyof PositionsState] = {
@@ -232,13 +238,16 @@ function Game() {
 
       if (turn === "Right Player" && positions && selectedCard.canUse) {
         
+        //executing passive abilities
         if(selectedCard.abilityType === "passive"){
-          selectedCard.ability("","","")
+          const updatedBothPositions = selectedCard.ability(null,positions,opponentPositions,turn);
+          setPositions(updatedBothPositions[0])
+          setOpponentPositions(updatedBothPositions[1])
         }
+
         // Update the Your positions
         const updatedPositions = { ...positions };
         let yourCardKilled = false;
-  
         for (const key in updatedPositions) {
           if (updatedPositions[key as keyof PositionsState].id === targetCard?.id) {
             updatedPositions[key as keyof PositionsState] = {
