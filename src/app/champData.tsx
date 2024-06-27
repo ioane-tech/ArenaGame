@@ -11,6 +11,7 @@ export interface Champion {
     abilityAvailable: boolean;
     description: Description;
     abilityType: string;
+    ability: Function;
 }
 
 const champData: Champion[] = [
@@ -25,7 +26,10 @@ const champData: Champion[] = [
             geo:"იმატებს 300 სიცოცხლეს, შემდეგ შეუძლია დარტყმა. 2 რაუნდის განმავლობაში აკლებს 250-ს.",
             eng:'Recovers 300 Hp, then can attack to an enemy. during 2 rounds it will have 250 Dmg.',
         },
-        abilityType: "active"
+        abilityType: "active",
+        ability:function(){
+            return;
+        }
     },
     {
         id:1,
@@ -38,7 +42,11 @@ const champData: Champion[] = [
             geo:"პასიური უნარი: როდესაც განახორციელებს ნებისმიერ დარტყმას იმატებს 100 სიცოცხლეს.",
             eng:'passive: When he makes demage he heals himself by 100 Hp.',
         },
-        abilityType: "passive"
+        abilityType: "passive",
+        ability:function(targer:any,opPositions:any,yourPositions:any){
+            this.hp = this.hp + 100
+            return;
+        }
     },
     {
         id:2,
@@ -51,7 +59,10 @@ const champData: Champion[] = [
             geo:"პასიური უნარი: თუ მოწინააღმდეგე მოგიკლავს ნებისმიერ კარტს, იმ კონკრეტულ მოწინააღმდეგეს Revenger აკლებს 400 სიცოცხლეს ყოველ დარტყმაზე.",
             eng:'passive: if an enemy kills any of your card, on that enemy Revenger will cause 400 Dmg on every hit.',
         },
-        abilityType: "passive"
+        abilityType: "passive",
+        ability:function(){
+            return;
+        }
     },
     {
         id:3,
@@ -64,7 +75,10 @@ const champData: Champion[] = [
             geo:"პასიური უნარი: როდესაც სიცოცხლე გაუხდება 700 ან ნაკლები, მასზე ყველა დარტყმა ნახევრდება.",
             eng:'passive: when he reaches 700 Hp or less, he tackes half Dmg on every hit.',
         },
-        abilityType: "passive"
+        abilityType: "passive",
+        ability:function(){
+            return;
+        }
     },
     {
         id:4,
@@ -77,7 +91,10 @@ const champData: Champion[] = [
             geo:"თავის გვერდზე აჩენს პანტერას, რომელსაც აქვს 500 სიცოცხლე და აკლებს 200 სიცოცხლეს. როდესაც პანტერა მოკვდება, Pantheron იმატებს 300 სიცოცხლეს.",
             eng:'Spawns a panther on its side that has 500 Hp and has 200 Dmg. When a panther dies, the Pantheron heals with 300 Hp.',
         },
-        abilityType: "both"
+        abilityType: "both",
+        ability:function(){
+            return;
+        }
     },
     {
         id:5,
@@ -90,7 +107,10 @@ const champData: Champion[] = [
             geo:"",
             eng:'',
         },
-        abilityType: ""
+        abilityType: "",
+        ability:function(){
+            return;
+        }
     },
     {
         id:6,
@@ -103,7 +123,10 @@ const champData: Champion[] = [
             geo:"ძალის გამოყენება შეუძლია ან საკუთარ კარტებზე ან მოწინააღმდეგეზე. თუ საკუთარ კარტს დაადებს ღრუბელს ეს კარტი იმატებს 150 სიცოცხლეს 2 რაუნდის განმავლობაში, ეფექტი მოქმედებს მაშინვე ითვლება მიმდინარე რაუნდიც. თუ Cacula ღრუბელს დაადებს მოწინააღმდეგეს მაშინ მოწინააღმდეგეს აკლდება 200 სიცოცხლე 2 რაუნდის განმავლობაში, ეფექტი მოქმედებს მაშინვე, ითვლება მიმდინარე რაუნდიც.",
             eng:'He can use the force either on his own cards or on the opponent. If you put your own card on the cloud, this card will heal by 150 Hp for 2 rounds, the effect takes effect immediately and the current round counts. If Cacula clouds an opponent then the opponent loses 200 Hp for 2 rounds, the effect takes effect immediately, the current round counts as well.',
         },
-        abilityType: "active"
+        abilityType: "active",
+        ability:function(){
+            return;
+        }
     },
     {
         id:7,
@@ -116,7 +139,10 @@ const champData: Champion[] = [
             geo:"2 რაუნდის განმავლობაში რომელიმე საკუთარ კარტს ან თავის თავს მალავს ჩრდილში, რომელიც იქნება ჩრდილში იმ კარტზე არავის შეეძლება დარტყმა. ითვლება მიმდინარე რაუნდიც.",
             eng:'For two rounds, he hides one of his cards or himself in a shadow, and no one can hit that card in the shadow. The current round counts',
         },
-        abilityType: "active"
+        abilityType: "active",
+        ability:function(){
+            return;
+        }
     },
     {
         id:8,
@@ -129,7 +155,10 @@ const champData: Champion[] = [
             geo:"საკუთარ თავს ან ნებისმიერ თავისიანს უმატებს 500 სიცოცხლეს.",
             eng:'she can heal herself or her temate by 500 Hp.',
         },
-        abilityType: "active"
+        abilityType: "active",
+        ability:function(){
+            return;
+        }
     },
     {
         id:9,
@@ -142,7 +171,10 @@ const champData: Champion[] = [
             geo:"პასიური უნარი: რამდენსაც დააკლებს მოწინააღმდეგე იმის ნახევარი თვითონაც აკლდება.",
             eng:'passive: As much as the opponent Demages Thornn, opponent also takes half of its Dmg.',
         },
-        abilityType: "passive"
+        abilityType: "passive",
+        ability:function(){
+            return;
+        }
     },
     // {
     //     id:10,
@@ -155,7 +187,10 @@ const champData: Champion[] = [
     //         geo:"იღებს ერთ აითემს",
     //         eng:'can take one item',
     //     },
-    //     abilityType: "active"
+    //     abilityType: "active",
+    // ability:function(){
+    //     return;
+    // }
     // },
     {
         id:11,
@@ -168,7 +203,10 @@ const champData: Champion[] = [
             geo:"შეუძლია დაბლოკოს ნებისმიერი მოწინააღმდეგის შესაძლებლობა, იქამდე სანამ ისინი ვინმეს არ მოკლავენ.",
             eng:'can block any opponents abbilitie before they kill someone.',
         },
-        abilityType: "active"
+        abilityType: "active",
+        ability:function(){
+            return;
+        }
     },
     {
         id:12,
@@ -181,7 +219,10 @@ const champData: Champion[] = [
             geo:"შეუძლია გაიმეოროს ნებისმიერი მოწინააღმდეგის შესაძლებლობა, თუმცა დაკლონვაში ხარჯავს სვლას. თუ სხვა შესაძლებლობის დაკლონვა მოგინდა სვლას დახარჯავ, მაგრამ თუ იგიე შესაძლებლობის გამოყენება გინდა, შეგიძლია მაშინვე გამოიყენო.",
             eng:'Can repeat any opponents ability, but spends a turn. if you want to repeat other ability you will spend turn again to clone, but if you want to use already cloned abbility you can use it immediately',
         },
-        abilityType: "active"
+        abilityType: "active",
+        ability:function(){
+            return;
+        }
     },
     {
         id:13,
@@ -194,7 +235,10 @@ const champData: Champion[] = [
             geo:"ნებისმიერ ერთ მოწინააღმდეგეს აუკიდებს ცეცხლს და ყველა რაუნდის განმავლობაში ამ მოწინააღმდეგეს აკლდება 100 სიცოცხლე. თუ მოწინააღმდეგე მოკვდა ძალა ავტომატურად უნახლდება. თუ Mouzer მოკვდა ძალა მაინც მოქმედებს.",
             eng:'Sets any one opponent on fire and deals 100 Dmg in every round. If the opponent dies, the abbility is automatically renewed. If the Mouzer dies the abbility still works.',
         },
-        abilityType: "active"
+        abilityType: "active",
+        ability:function(){
+            return;
+        }
     },
     {
         id:14,
@@ -207,7 +251,10 @@ const champData: Champion[] = [
             geo:"პასიური უნარი: როდესაც ნებისმიერი მოწინააღმდეგე მოკვდება Ars იმატებს 200 სიცოცხლეს და დარტყმა ეზრდება 100 -ით, ეს ხდება იმდენჯერ რამდენჯერაც მოწინააღმდეგის კარტი მოკვდება.",
             eng:'passive: When any opponent dies, Ars gains 200 Hp and increase Dmg by 100, this happens every time when the opponents card dies.',
         },
-        abilityType: "passive"
+        abilityType: "passive",
+        ability:function(){
+            return;
+        }
     },
     // {
             // id:15,
@@ -220,7 +267,10 @@ const champData: Champion[] = [
     //         geo:"",
     //         eng:'',
     //     },
-    //     abilityType: ""
+    //     abilityType: "",
+    // ability:function(){
+    //     return;
+    // }
     // },
     {
         id:16,
@@ -233,7 +283,10 @@ const champData: Champion[] = [
             geo:"პასიური უნარი: როდესაც KingNolaran მოკლავს მოწინააღმდეგეს ყველა მოწინააღმდეგეს აკლდება 150 სიცოცხლე. თუ თვითნ მოკვდა KingNolaran ამ შემთხვევაში ყველა მოწინააღმდეგეს აკლდება 100 სიცოცხლე.",
             eng:'Passive: When KingNolaran kills an opponent, all opponents will lose 150 Hp. If KingNolaran dies, all opponents lose 100 Hp.',
         },
-        abilityType: "passive"
+        abilityType: "passive",
+        ability:function(){
+            return;
+        }
     },
     // {
     //     id:17,
@@ -246,7 +299,10 @@ const champData: Champion[] = [
     //         geo:"",
     //         eng:'',
     //     },
-    //     abilityType: ""
+    //     abilityType: "",
+    // ability:function(){
+    //     return;
+    // }
     // },
     {
         id:18,
@@ -259,7 +315,10 @@ const champData: Champion[] = [
             geo:"არ აქვს ძალა!",
             eng:'has no ability!',
         },
-        abilityType: ""
+        abilityType: "",
+        ability:function(){
+            return;
+        }
     },
     // {
     //     id:19,
@@ -272,7 +331,10 @@ const champData: Champion[] = [
     //         geo:"",
     //         eng:'',
     //     }
-    //     abilityType: ""
+    //     abilityType: "",
+    // ability:function(){
+    //     return;
+    // }
     // },
     {
         id:20,
@@ -285,7 +347,10 @@ const champData: Champion[] = [
             geo:"შესაძლებლობა: რომელიმე მოწინააღმდეგეს აკლებს 300 სიცოცხლეს და იმატებს 200 სიცოცხლეს.  პასიური უნარი: ვინც დაარტყავს Magma- ს თვითონაც აკლდება 100 სიცოცხლე.",
             eng:'Ability: deals 300 Hp on one opponent and gains 200 Hp. Passive: Anyone that hits Magma also loses 100 Hp.',
         },
-        abilityType: "both"
+        abilityType: "both",
+        ability:function(){
+            return;
+        }
     },
     {
         id:21,
@@ -298,7 +363,10 @@ const champData: Champion[] = [
             geo:"ისვრის მეტეორს, რომელიც ყველა მოწინააღმდეგეს აკლებს 200 სიცოცხლეს",
             eng:'throws meteor that deals 200 Dmg on every opponent',
         },
-        abilityType: "active"
+        abilityType: "active",
+        ability:function(){
+            return;
+        }
     },
     {
         id:22,
@@ -311,7 +379,10 @@ const champData: Champion[] = [
             geo:"შეუძლია საკუთარ თავს ან რომელიმე თავისიანს დაადოს ფარი. ვისაც ადევს ფარი მასზე ყველა დარტყმა განახევრდება 2 რაუნდის განმავლობაში, მიმდინარე რაუნდიც ითვლება.",
             eng:'Can shield himself or one of his teamate. Whoever is wearing the shield will take half Dmg for 2 rounds, The current round counts.',
         },
-        abilityType: "active"
+        abilityType: "active",
+        ability:function(){
+            return;
+        }
     },
     // {
     //     id:23,
@@ -324,7 +395,10 @@ const champData: Champion[] = [
     //         geo:"",
     //         eng:'',
     //     }
-    //     abilityType: ""
+    //     abilityType: "",
+    // ability:function(){
+    //     return;
+    // }
     // },
     // {
     //     id:24,
@@ -337,7 +411,10 @@ const champData: Champion[] = [
     //         geo:"",
     //         eng:'',
     //     }
-    //     abilityType: ""
+    //     abilityType: "",
+    // ability:function(){
+    //     return;
+    // }
     // },
     // {
     //     id:25,
@@ -350,7 +427,10 @@ const champData: Champion[] = [
     //         geo:"",
     //         eng:'',
     //     }
-    //     abilityType: ""
+    //     abilityType: "",
+    // ability:function(){
+    //     return;
+    // }
     // },
     // {
         // id:26,
@@ -363,7 +443,10 @@ const champData: Champion[] = [
     //         geo:"",
     //         eng:'',
     //     }
-    //     abilityType: ""
+    //     abilityType: "",
+    // ability:function(){
+    //     return;
+    // }
     // },
     // {
     //     id:27,
@@ -376,7 +459,10 @@ const champData: Champion[] = [
     //         geo:"",
     //         eng:'',
     //     }
-    //     abilityType: ""
+    //     abilityType: "",
+    // ability:function(){
+    //     return;
+    // }
     // },
     // {
     //     id:28,
@@ -389,7 +475,10 @@ const champData: Champion[] = [
     //         geo:"",
     //         eng:'',
     //     }
-    //     abilityType: ""
+    //     abilityType: "",
+    // ability:function(){
+    //     return;
+    // }
     //     //dodge 35%  display on front line when Aart adur kills someone
     // },
     // {
@@ -403,7 +492,10 @@ const champData: Champion[] = [
     //         geo:"",
     //         eng:'',
     //     }
-    //     abilityType: ""
+    //     abilityType: "",
+    // ability:function(){
+    //     return;
+    // }
     // },
 ]
 

@@ -24,6 +24,7 @@ export interface activeChampoins {
   abilityAvailable: boolean;
   description: Description;
   abilityType: string;
+  ability: Function;
   hasKilled: number;
   canUse: boolean;
 }
@@ -164,10 +165,14 @@ function Game() {
   const hitHandler = (targetCard: activeChampoins | undefined) => {
     if (selectedCard && targetCard && yourCards.length === 0 && opponentCards.length === 0 ) {
       if (turn === "Left Player" && opponentPositions && selectedCard.canUse) {
+
+        if(selectedCard.abilityType === "passive"){
+          selectedCard.ability("","","")
+        }
         // Update the opponent positions
         const updatedOpponentPositions = { ...opponentPositions };
         let opponentCardKilled = false;
-  
+        
         for (const key in updatedOpponentPositions) {
           if (updatedOpponentPositions[key as keyof PositionsState].id === targetCard?.id) {
             updatedOpponentPositions[key as keyof PositionsState] = {
@@ -226,6 +231,10 @@ function Game() {
       }
 
       if (turn === "Right Player" && positions && selectedCard.canUse) {
+        
+        if(selectedCard.abilityType === "passive"){
+          selectedCard.ability("","","")
+        }
         // Update the Your positions
         const updatedPositions = { ...positions };
         let yourCardKilled = false;
